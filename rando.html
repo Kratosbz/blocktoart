@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Letter + Musical Jar</title>
+<style>
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #f7c1d9, #fde2e4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+.envelope, .jar {
+    width: 340px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    padding: 25px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+h2 { color: #b5179e; margin-bottom: 10px; }
+input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 15px; margin-top: 10px; }
+button { margin-top: 12px; padding: 10px 18px; border: none; border-radius: 20px; background: #b5179e; color: #fff; font-size: 15px; cursor: pointer; }
+button:hover { background: #9d4edd; }
+.hint { font-size: 13px; color: #555; margin-top: 8px; display: none; }
+.letter { display: none; text-align: left; margin-top: 15px; }
+.letter p { margin-bottom: 15px; opacity: 0; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes type { 0% { width: 0; } 100% { width: 100%; } }
+.music-toggle { margin-top: 10px; font-size: 14px; color: #b5179e; cursor: pointer; text-decoration: underline; }
+.jar svg { width: 100%; }
+.candy { cursor: pointer; transition: transform 0.2s; }
+.candy:hover { transform: scale(1.2); }
+</style>
+</head>
+<body>
+
+<!-- ENVELOPE LETTER -->
+<div class="envelope">
+    <h2>💌 A Letter Just for You</h2>
+    <p>Enter the first password to unlock</p>
+    <input type="password" id="password1" placeholder="Memory password…">
+    <button onclick="unlockStage1()">Open</button>
+    <div class="hint" id="hint1">Hint: The day we laughed till we cried 💭</div>
+
+    <div class="letter" id="letter">
+        <p id="line1"></p>
+        <p id="line2"></p>
+        <p id="line3"></p>
+        <div class="music-toggle" onclick="toggleMusic()">🎵 Play/Stop Background Song</div>
+    </div>
+</div>
+
+<!-- KEEP THE ENVELOPE AS BEFORE -->
+
+<!-- UPDATED M&Ms JAR -->
+<div class="jar">
+    <h2>🍬 Musical Jar</h2>
+    <p>Hover over an M&M to see its song, click to play!</p>
+    <div id="candies" style="position:relative; width:100%; height:300px; overflow:hidden;"></div>
+    <audio id="audio" controls style="margin-top:15px; width:100%; display:none;"></audio>
+</div>
+
+<script>
+// ------------------- M&Ms JAR -------------------
+// const candiesDiv = document.getElementById("candies");
+// const audioEl = document.getElementById("audio");
+
+// Songs + titles
+const songs = [
+    {title:"Blinding Lights", url:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"},
+    {title:"Save Your Tears", url:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"},
+    {title:"Starboy", url:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"},
+    {title:"Can't Feel My Face", url:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"},
+    {title:"The Hills", url:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"},
+    {title:"After Hours", url:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3"}
+];
+
+const candyColors = ["#FF4D6D","#FFCD3C","#6ADBC6","#FF85A2","#A678E8","#4DB6FF"];
+
+for(let i=0;i<15;i++){
+    const candy = document.createElement("div");
+    candy.className = "candy";
+    candy.textContent = "🍬";
+
+    // Random color and tooltip
+    const song = songs[Math.floor(Math.random()*songs.length)];
+    candy.style.color = candyColors[Math.floor(Math.random()*candyColors.length)];
+    candy.title = song.title;
+
+    // Random initial position inside jar
+    candy.style.position = "absolute";
+    candy.style.left = Math.random()*80 + "%";
+    candy.style.top = Math.random()*80 + "%";
+    candy.style.fontSize = "30px";
+    candy.style.transform = `rotate(${Math.random()*360}deg)`;
+
+    // Click to play song
+    candy.onclick = () => {
+        audioEl.src = song.url;
+        audioEl.style.display = "block";
+        audioEl.play();
+    };
+
+    candiesDiv.appendChild(candy);
+
+    // Bouncing animation
+    let dx = (Math.random()*2+0.5)*(Math.random()<0.5?-1:1);
+    let dy = (Math.random()*2+0.5)*(Math.random()<0.5?-1:1);
+
+    function moveCandy(){
+        let rect = candiesDiv.getBoundingClientRect();
+        let candyRect = candy.getBoundingClientRect();
+
+        let left = candy.offsetLeft;
+        let top = candy.offsetTop;
+
+        if(left + dx < 0 || left + dx + candyRect.width > rect.width){
+            dx = -dx;
+        }
+        if(top + dy < 0 || top + dy + candyRect.height > rect.height){
+            dy = -dy;
+        }
+
+        candy.style.left = (left + dx) + "px";
+        candy.style.top = (top + dy) + "px";
+
+        requestAnimationFrame(moveCandy);
+    }
+
+    moveCandy();
+}
+</script>
+
+<script>
+// ------------------- LETTER -------------------
+const correctPassword1 = "0423"; // Stage 1
+const letterLines = [
+    "If you’re reading this, it means you remembered. That alone is special 💖",
+    "Some moments don’t fade. They stay in the heart, waiting to remind us how special they were.",
+    "This is one of those moments — and so are you."
+];
+
+let musicPlaying = false;
+const bgMusic = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"); // replace with Plink link
+bgMusic.loop = true;
+
+function unlockStage1() {
+    const input = document.getElementById("password1").value;
+    const hint = document.getElementById("hint1");
+
+    if (input === correctPassword1) {
+        document.querySelector(".envelope input").style.display = "none";
+        document.querySelector(".envelope button").style.display = "none";
+        document.querySelector("p").style.display = "none";
+        hint.style.display = "none";
+
+        const letter = document.getElementById("letter");
+        letter.style.display = "block";
+
+        // WhatsApp-style typing animation
+        letterLines.forEach((text, i) => {
+            const lineEl = document.getElementById(`line${i+1}`);
+            let index = 0;
+            const interval = setInterval(() => {
+                lineEl.textContent += text[index];
+                index++;
+                if(index >= text.length) clearInterval(interval);
+            }, 40); // typing speed
+        });
+
+    } else {
+        hint.style.display = "block";
+        hint.textContent = "Hint: numbers, something special we share 💭";
+    }
+}
+
+function toggleMusic() {
+    if(musicPlaying) {
+        bgMusic.pause();
+        musicPlaying = false;
+    } else {
+        bgMusic.play();
+        musicPlaying = true;
+    }
+}
+
+// ------------------- M&Ms JAR -------------------
+const candiesDiv = document.getElementById("candies");
+const audioEl = document.getElementById("audio");
+
+// Example songs (Plink or MP3 links)
+const songs = [
+    "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+    "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+    "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+    "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+    "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+    "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3"
+];
+
+// Generate candies
+for(let i=0;i<15;i++){
+    const candy = document.createElement("div");
+    candy.className = "candy";
+    candy.textContent = "🍬";
+    candy.onclick = () => {
+        const randomSong = songs[Math.floor(Math.random()*songs.length)];
+        audioEl.src = randomSong;
+        audioEl.style.display = "block";
+        audioEl.play();
+    };
+    candiesDiv.appendChild(candy);
+}
+</script>
+</body>
+</html>
