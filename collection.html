@@ -10,7 +10,7 @@
         :root {
             --vx-primary: #155dfc;
             --vx-primary-hover: #4871ed;
-            --vx-blue: #3b82f6;
+            --vx-blue: #2bc4cf;
             --vx-dark: #1a1a2e;
             --vx-light: #f8fafc;
             --vx-card-bg: #ffffff;
@@ -646,10 +646,10 @@
       color: #183b56;
     }
 
-    .logo img {
+    /* .logo img {
       width: 32px;
       height: 32px;
-    }
+    } */
 
     .nav-menu {
       display: flex;
@@ -1388,19 +1388,20 @@
   <div class="container">
     <nav class="nav">
       <!-- Logo -->
-     <a href="#" class="logo">
+     <a href="./index.html" class="logo">
        <img src="./logo.png" width="150px" height="50px" />
       </a>
 
       <!-- Navigation Menu -->
       <ul class="nav-menu nav-menux">
-        <li class="nav-item">
-          <a href="#">Home <span class="dot"></span></a>
+       <li class="nav-item">
+          <a href="./marketplace.html">Marketplace</a>
         </li>
 
         <li class="nav-item">
-          <a href="#">Marketplace</a>
+          <a href="./allcollections.html">Collections</a>
         </li>
+
 
         <li class="nav-item">
           <a href="./allcollections.html">Collections</a>
@@ -1803,11 +1804,11 @@ function setupEventListeners() {
 
 async function loadNFTs() {
     try {
-        const token = localStorage.getItem('token');
-        if (!token) throw new Error('No token found');
+        // const token = localStorage.getItem('token');
+        // if (!token) throw new Error('No token found');
 
         const res = await fetch('https://changes-sample.onrender.com/api/marketplace/nfts', {
-            headers: { 'Authorization': `Bearer ${token}` }
+            // headers: { 'Authorization': `Bearer ${token}` }
         });
         if (!res.ok) throw new Error('Failed to fetch NFTs');
 

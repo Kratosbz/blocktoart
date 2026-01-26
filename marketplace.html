@@ -11,7 +11,7 @@
         :root {
             --vx-primary: #155dfc;
             --vx-primary-hover: #4871ed;
-            --vx-blue: #3b82f6;
+            --vx-blue: #2bc4cf;
             --vx-dark: #1a1a2e;
             --vx-light: #f8fafc;
             --vx-card-bg: #ffffff;
@@ -434,7 +434,7 @@
             font-size: 1.5rem;
         }
         
-        .vx-category-icon.blue { background: #dbeafe; color: #3b82f6; }
+        .vx-category-icon.blue { background: #dbeafe; color: #2bc4cf; }
         .vx-category-icon.pink { background: #fce7f3; color: #ec4899; }
         .vx-category-icon.teal { background: #ccfbf1; color: #14b8a6; }
         .vx-category-icon.red { background: #fee2e2; color: #ef4444; }
@@ -1969,7 +1969,7 @@ const token = localStorage.getItem('token');
       showCancelButton: true,
       confirmButtonText: 'Go to Login',
       cancelButtonText: 'Cancel',
-      confirmButtonColor: '#3b82f6'
+      confirmButtonColor: '#2bc4cf'
     });
 
     if (loginResult.isConfirmed) {
@@ -1986,7 +1986,7 @@ const token = localStorage.getItem('token');
     showCancelButton: true,
     confirmButtonText: 'Buy Now',
     cancelButtonText: 'Cancel',
-    confirmButtonColor: '#3b82f6'
+    confirmButtonColor: '#2bc4cf'
   });
 
   if (!result.isConfirmed) return;
@@ -2015,7 +2015,7 @@ const token = localStorage.getItem('token');
       icon: 'success',
       title: 'Success',
       text: `Congratulations! You now own "${nft.name}". The artwork has been transferred to your collection.`,
-      confirmButtonColor: '#3b82f6'
+      confirmButtonColor: '#2bc4cf'
     });
 
     closeArtworkModal();
@@ -2026,7 +2026,7 @@ const token = localStorage.getItem('token');
       icon: 'error',
       title: 'Error',
       text: err.message || 'Failed to complete purchase. Please try again.',
-      confirmButtonColor: '#3b82f6'
+      confirmButtonColor: '#2bc4cf'
     });
   }
 }
@@ -2042,7 +2042,7 @@ const token = localStorage.getItem('token');
                 showCancelButton: true,
                 confirmButtonText: 'Submit Bid',
                 cancelButtonText: 'Cancel',
-                confirmButtonColor: '#3b82f6'
+                confirmButtonColor: '#2bc4cf'
             });
             if (!bidAmount) return;
             
@@ -2050,7 +2050,7 @@ const token = localStorage.getItem('token');
                 icon: 'info',
                 title: 'Bid Placed',
                 text: `Your bid of ${bidAmount} ETH has been submitted. You will be notified if you win!`,
-                confirmButtonColor: '#3b82f6'
+                confirmButtonColor: '#2bc4cf'
             });
         }
         
