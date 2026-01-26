@@ -921,42 +921,19 @@
 
   <!-- Top Artists Section -->
   <section class="section top-artists">
-    <div class="container">
-      <div class="section-header">
-        <h2>Top Artists</h2>
-        <div class="nav-arrows">
-          <button class="arrow-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"></path></svg></button>
-          <button class="arrow-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"></path></svg></button>
-        </div>
-      </div>
-      <div class="artists-grid">
-        <div class="artist-card">
-          <img src="https://ext.same-assets.com/1749930335/3998142795.png" alt="Avatar" class="artist-avatar">
-          <div class="artist-info">
-            <span class="artist-name">@xander_hall...</span>
-            <span class="artist-value">16.58 ETH</span>
-          </div>
-          <img src="https://ext.same-assets.com/1749930335/2003561026.svg" alt="Verified" class="verified-badge">
-        </div>
-        <div class="artist-card">
-          <img src="https://ext.same-assets.com/1749930335/1100283812.png" alt="Avatar" class="artist-avatar">
-          <div class="artist-info">
-            <span class="artist-name">@hamza_pitts...</span>
-            <span class="artist-value">14.55 ETH</span>
-          </div>
-          <img src="https://ext.same-assets.com/1749930335/2003561026.svg" alt="Verified" class="verified-badge">
-        </div>
-        <div class="artist-card">
-          <img src="https://ext.same-assets.com/1749930335/1560789857.png" alt="Avatar" class="artist-avatar">
-          <div class="artist-info">
-            <span class="artist-name">@nathan_walls...</span>
-            <span class="artist-value">24.13 ETH</span>
-          </div>
-          <img src="https://ext.same-assets.com/1749930335/2003561026.svg" alt="Verified" class="verified-badge">
-        </div>
-      </div>
-    </div>
-  </section>
+<div class="container">
+<div class="section-header">
+<h2>Top Artists</h2>
+<div class="nav-arrows">
+<button class="arrow-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"></path></svg></button>
+<button class="arrow-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"></path></svg></button>
+</div>
+</div>
+<div class="artists-grid" id="topArtistsGrid">
+<!-- Artist cards will be injected here -->
+</div>
+</div>
+</section>
 
   <!-- Explore Section -->
   <section class="section explore">
@@ -1094,7 +1071,7 @@ body.dark .nft-card {
     <div class="container">
       <div class="section-header">
         <h2>Collections</h2>
-        <a href="./collections.html" class="btn btn-dark btn-sm">View All</a>
+        <a href="./allcollections.html" class="btn btn-dark btn-sm">View All</a>
       </div>
       <div class="collections-grid" id="collectionsContainer">
         <!-- Collection 1 -->
@@ -1180,8 +1157,95 @@ body.dark .nft-card {
       </div>
     </div>
   </section>
+
+  <!-- HERO SECTION -->
+<section class="hero-auctions">
+  <div class="hero-content">
+    <div class="hero-text">
+      <span class="hero-badge">Live Marketplace</span>
+      <h1>Auctions & Exhibitions</h1>
+      <p>
+        Discover exclusive NFT auctions and curated digital art exhibitions
+        from creators around the world.
+      </p>
+    </div>
+
+    <div class="hero-image">
+      <img 
+        src="https://images.unsplash.com/photo-1642104704074-907c0698cbd9?auto=format&fit=crop&w=900&q=80"
+        alt="Featured NFT Artwork"
+      />
+    </div>
+  </div>
+</section>
+
+
+
+<!-- AUCTIONS SECTION -->
+<section class="section">
+  <div class="container containerx">
+    <div class="section-header">
+      <span class="section-tag auction-tag">AUCTIONS</span>
+      <h2>Live NFT Auctions</h2>
+    </div>
+
+    <div class="row" id="auctionsGrid"></div>
+  </div>
+</section>
+
+<!-- EXHIBITIONS SECTION -->
+<section class="section">
+  <div class="container containerx">
+    <div class="section-header">
+      <span class="section-tag exhibition-tag">EXHIBITIONS</span>
+      <h2>Curated Exhibitions</h2>
+    </div>
+
+    <div class="row mt-4" id="exhibitionsGrid"></div>
+  </div>
+</section>
+<style>
+    #exhibitionsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 per row on desktop */
+    gap: 24px;
+}
+.hero-content,
+.containerx {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero-auctions {
+  padding: 80px 32px; /* top/bottom | left/right */
+}
+/* GLOBAL CONTAINER PADDING */
+.containerx {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+/* Optional: stack on mobile */
+@media (max-width: 768px) {
+    #exhibitionsGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+  .hero-auctions {
+    padding: 60px 20px;
+  }
+
+  .containerx {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+</style>
   
-  
+
+
   <!-- CTA Section -->
   <section class="cta-section">
     <div class="container">
@@ -1277,6 +1341,8 @@ body.dark .nft-card {
   </footer>
 </body>
 </html>
+
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 /* =========================
    STATE
@@ -1284,9 +1350,16 @@ body.dark .nft-card {
 let allNFTs = [];
 let likedNFTs = JSON.parse(localStorage.getItem('likedNFTs') || '[]');
 let allCollections = [];
+let allAuctions = [];
+let allExhibitions = [];
 const collectionNFTImages = {};
 const MAX_GRID_ITEMS = 12;
 const MAX_PER_CATEGORY = 4;
+let currentNFT = null;
+
+/* =========================
+   DOM ELEMENTS
+========================= */
 
 /* =========================
    INIT
@@ -1296,6 +1369,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadCollections();
     mapNFTsToCollections();
     renderCollections();
+    loadAuctionsAndExhibitions();
+    loadTopArtists();
 });
 
 /* =========================
@@ -1305,9 +1380,7 @@ async function loadMarketplaceData() {
     try {
         const res = await fetch('https://changes-sample.onrender.com/api/marketplace/nfts');
         if (!res.ok) throw new Error('Failed to fetch NFTs');
-
         allNFTs = await res.json();
-
         renderNFTGrid(allNFTs);
         renderCategorySections(allNFTs);
     } catch (err) {
@@ -1319,10 +1392,31 @@ async function loadCollections() {
     try {
         const res = await fetch('https://changes-sample.onrender.com/api/marketplace/collections');
         if (!res.ok) throw new Error('Failed to fetch collections');
-
         allCollections = await res.json();
     } catch (err) {
         console.error('Failed to load collections:', err);
+    }
+}
+
+async function loadTopArtists() {
+    try {
+        const res = await fetch('https://changes-sample.onrender.com/api/users?page=1&limit=3');
+        if (!res.ok) throw new Error('Failed to fetch users');
+        const data = await res.json();
+        const users = data.users || [];
+        const grid = document.getElementById('topArtistsGrid');
+        grid.innerHTML = users.map(user => `
+            <div class="artist-card" onclick="goToArtist('${user.username}')">
+                <img src="${user.profileImage || 'default-avatar.png'}" alt="Avatar" class="artist-avatar">
+                <div class="artist-info">
+                    <span class="artist-name">@${user.username}</span>
+                    <span class="artist-value">${user.walletBalance?.toFixed(2) || 0} ETH</span>
+                </div>
+                ${user.verified ? `<img src="https://ext.same-assets.com/1749930335/2003561026.svg" alt="Verified" class="verified-badge">` : ''}
+            </div>
+        `).join('');
+    } catch (err) {
+        console.error('Error loading top artists:', err);
     }
 }
 
@@ -1340,7 +1434,7 @@ function mapNFTsToCollections() {
 }
 
 /* =========================
-   NFT GRID (FIRST 12)
+   NFT GRID
 ========================= */
 function renderNFTGrid(nfts) {
     const grid = document.getElementById('nftGrid');
@@ -1359,9 +1453,6 @@ function renderNFTGrid(nfts) {
     grid.innerHTML = nfts.slice(0, MAX_GRID_ITEMS).map(renderNFTCard).join('');
 }
 
-/* =========================
-   CATEGORY SECTIONS
-========================= */
 function renderCategorySections(nfts) {
     const container = document.getElementById('categorySections');
     if (!container) return;
@@ -1373,26 +1464,42 @@ function renderCategorySections(nfts) {
         return acc;
     }, {});
 
-    container.innerHTML = Object.entries(grouped).map(([category, items]) => {
-        return `
+    container.innerHTML = Object.entries(grouped).map(([category, items]) => `
         <section class="category-section">
             <div class="category-header">
                 <div class="category-left">
                     <h2>${category}</h2>
                     <span class="category-count">${items.length} artworks</span>
                 </div>
-                <a href="category.html?category=${encodeURIComponent(category)}" class="see-all">
-                    See all →
-                </a>
+                <a href="category.html?category=${encodeURIComponent(category)}" class="see-all">See all →</a>
             </div>
             <div class="nft-grid">
                 ${items.slice(0, MAX_PER_CATEGORY).map(renderNFTCard).join('')}
             </div>
         </section>
-        `;
-    }).join('');
+    `).join('');
 }
+async function incrementViews(nftId) {
+            try {
+const token = localStorage.getItem('token'); 
+    if (!token) throw new Error('No token found');
 
+                await fetch(`https://changes-sample.onrender.com/api/marketplace/nfts/${nftId}/view`, { method: 'POST' });
+            } catch (err) {
+                console.error('View increment error:', err);
+            }
+        }
+
+        function openArtworkModal(nftId) {
+    if (!nftId) return;
+
+    // increment views before redirect
+    incrementViews(nftId);
+
+    // redirect with query param
+    window.location.href = `artwork.html?id=${encodeURIComponent(nftId)}`;
+}
+        
 /* =========================
    NFT CARD RENDERER
 ========================= */
@@ -1410,9 +1517,8 @@ function renderNFTCard(nft) {
     <div class="nft-card"
          role="link"
          tabindex="0"
-         onclick="goToBid('${nft._id}')"
-         onkeydown="handleCardKey(event, '${nft._id}')"
-         data-testid="card-nft-${nft._id}">
+         onclick="openArtworkModal('${nft._id}')"
+         onkeydown="handleCardKey(event, '${nft._id}')">
 
         <div class="nft-creators">${creatorsHTML}</div>
 
@@ -1426,171 +1532,69 @@ function renderNFTCard(nft) {
 
         <div class="nft-info">
             <h3>${nft.name}</h3>
-
             <div class="nft-meta">
-                <span class="stock">
-                    ${nft.stock ? `${nft.stock} in stock` : 'Single item'}
-                </span>
-                <span class="price">
-                    <strong>
-                        ${nft.price ? nft.price.toFixed(2) + (nft.currency || ' ETH') : 'Not listed'}
-                    </strong>
-                </span>
+                <span class="stock">${nft.stock ? `${nft.stock} in stock` : 'Single item'}</span>
+                <span class="price"><strong>${nft.price ? nft.price.toFixed(2) + (nft.currency || ' ETH') : 'Not listed'}</strong></span>
             </div>
-
             <div class="nft-actions">
                 <a href="history.html?id=${nft._id}" onclick="event.stopPropagation()">View History</a>
-                <a href="artwork.html?id=${nft._id}" class="btn btn-primary btn-sm" onclick="event.stopPropagation()">Place Bid</a>
+                <a href="#" class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openArtworkModal('${nft._id}')">Place Bid</a>
             </div>
         </div>
-    </div>
-    `;
+    </div>`;
 }
-
-async function toggleLike(nftId) {
-            const isLiked = likedNFTs.includes(nftId);
-            
-            if (isLiked) {
-                likedNFTs = likedNFTs.filter(id => id !== nftId);
-            } else {
-                likedNFTs.push(nftId);
-            }
-            localStorage.setItem('likedNFTs', JSON.stringify(likedNFTs));
-            
-            const nft = allNFTs.find(n => n._id === nftId);
-            if (nft) {
-                nft.likes = isLiked ? Math.max(0, (nft.likes || 0) - 1) : (nft.likes || 0) + 1;
-            }
-            
-            filterAndRenderNFTs();
-            
-            try {
-const token = localStorage.getItem('token'); 
-    if (!token) throw new Error('No token found');
-
-                await fetch(`https://changes-sample.onrender.com/api/marketplace/nfts/${nftId}/like`, {
-                    method: 'POST',
-                     headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` // ✅ Send JWT
-      },     body: JSON.stringify({ unlike: isLiked })
-                });
-            } catch (err) {
-                console.error('Like sync error:', err);
-            }
-        }
-        
-        function openArtworkModal(nftId) {
-            currentNFT = allNFTs.find(n => n._id === nftId);
-            if (!currentNFT) return;
-            
-            window.history.pushState({}, '', `/marketplace?nft=${nftId}`);
-            
-            incrementViews(nftId);
-            
-            document.getElementById('modalArtworkImage').src = currentNFT.imageUrl;
-            document.getElementById('modalArtworkName').textContent = currentNFT.name;
-            document.getElementById('modalCreatorAvatar').textContent = (currentNFT.creator || 'U')[0].toUpperCase();
-            document.getElementById('modalCreatorName').textContent = currentNFT.creator || 'Unknown Artist';
-            document.getElementById('modalArtworkDescription').textContent = currentNFT.description || 'No description available';
-            document.getElementById('modalCategory').textContent = currentNFT.category || 'Art';
-            document.getElementById('modalRarity').textContent = currentNFT.rarity || 'Common';
-            document.getElementById('modalPrice').textContent = currentNFT.price ? 
-                `${currentNFT.price.toFixed(2)} ${currentNFT.currency || 'ETH'}` : 'Not for sale';
-            document.getElementById('modalLikeCount').textContent = currentNFT.likes || 0;
-            document.getElementById('modalViews').textContent = currentNFT.views || 0;
-            
-            const isLiked = likedNFTs.includes(nftId);
-            const likeBtn = document.getElementById('modalLikeBtn');
-            likeBtn.innerHTML = `<i class="bi bi-heart${isLiked ? '-fill' : ''} me-1"></i> <span id="modalLikeCount">${currentNFT.likes || 0}</span>`;
-            likeBtn.classList.toggle('btn-danger', isLiked);
-            likeBtn.classList.toggle('btn-outline-danger', !isLiked);
-            
-            const actionBtns = document.getElementById('modalActionBtns');
-            if (currentNFT.status === 'listed') {
-                actionBtns.innerHTML = `
-                    <button class="vx-action-btn primary" onclick="buyNFT('${nftId}')" data-testid="button-modal-buy">
-                        <i class="bi bi-cart me-2"></i>Buy Now for ${currentNFT.price} ${currentNFT.currency || 'ETH'}
-                    </button>
-                `;
-            } else if (currentNFT.status === 'auction') {
-                actionBtns.innerHTML = `
-                    <button class="vx-action-btn primary" onclick="placeBid('${nftId}')" data-testid="button-modal-bid">
-                        <i class="bi bi-hammer me-2"></i>Place Bid
-                    </button>
-                `;
-            } else {
-                actionBtns.innerHTML = `
-                    <div class="alert alert-secondary mb-0">This artwork is not currently for sale</div>
-                `;
-            }
-            
-            document.getElementById('shareLink').value = window.location.href;
-            
-            document.getElementById('artworkModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeArtworkModal() {
-            document.getElementById('artworkModal').style.display = 'none';
-            document.body.style.overflow = '';
-            window.history.pushState({}, '', '/marketplace');
-            currentNFT = null;
-        }
-function toggleModalLike() {
-            if (currentNFT) {
-                toggleLike(currentNFT._id);
-                const isLiked = likedNFTs.includes(currentNFT._id);
-                const likeBtn = document.getElementById('modalLikeBtn');
-                likeBtn.innerHTML = `<i class="bi bi-heart${isLiked ? '-fill' : ''} me-1"></i> <span id="modalLikeCount">${currentNFT.likes || 0}</span>`;
-                likeBtn.classList.toggle('btn-danger', isLiked);
-                likeBtn.classList.toggle('btn-outline-danger', !isLiked);
-            }
-        }
 
 /* =========================
-   COLLECTION CARD RENDERER
+   LIKE FUNCTIONALITY
+========================= */
+async function toggleLike(nftId) {
+    const isLiked = likedNFTs.includes(nftId);
+    likedNFTs = isLiked ? likedNFTs.filter(id => id !== nftId) : [...likedNFTs, nftId];
+    localStorage.setItem('likedNFTs', JSON.stringify(likedNFTs));
+
+    const nft = allNFTs.find(n => n._id === nftId);
+    if (nft) nft.likes = isLiked ? Math.max(0, (nft.likes || 0) - 1) : (nft.likes || 0) + 1;
+
+    renderNFTGrid(allNFTs);
+
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        await fetch(`https://changes-sample.onrender.com/api/marketplace/nfts/${nftId}/like`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json','Authorization': `Bearer ${token}`},
+            body: JSON.stringify({ unlike: isLiked })
+        });
+    } catch (err) {
+        console.error('Like sync error:', err);
+    }
+}
+
+/* =========================
+   COLLECTIONS
 ========================= */
 async function fetchUserByEmail(email) {
-if (!email) return null;
-
-
-try {
-const res = await fetch(`https://changes-sample.onrender.com/api/user/by-email/${encodeURIComponent(email)}`);
-if (!res.ok) {
-console.warn('User not found or fetch failed:', res.status);
-return null;
+    if (!email) return null;
+    try {
+        const res = await fetch(`https://changes-sample.onrender.com/api/user/by-email/${encodeURIComponent(email)}`);
+        if (!res.ok) return null;
+        const data = await res.json();
+        return { username: data.username, profileImage: data.profileImage };
+    } catch (err) {
+        console.error('Error fetching user by email:', err);
+        return null;
+    }
 }
 
-
-const data = await res.json();
-// Return only the properties you want
-return {
-username: data.username,
-profileImage: data.profileImage 
-};
-} catch (err) {
-console.error('Error fetching user by email:', err);
-return null;
-}
-}
 async function renderCollections() {
     const container = document.getElementById('collectionsContainer');
     if (!container) return;
-
     let html = '';
-
     for (const collection of allCollections) {
-        // fetch user info
         const user = await fetchUserByEmail(collection.owner);
-
-        // NFT images
         const nftImages = collectionNFTImages[collection._id] || [];
-        const smallImagesHTML = nftImages
-            .slice(0, 3)
-            .map(url => `<img src="${url}" alt="Preview">`)
-            .join('');
-
+        const smallImagesHTML = nftImages.slice(0, 3).map(url => `<img src="${url}" alt="Preview">`).join('');
         html += `
         <div class="collection-card" onclick="goToCollection('${collection._id}')">
             <div class="collection-images">
@@ -1602,44 +1606,220 @@ async function renderCollections() {
             <div class="collection-info">
                 <div class="collection-title-row">
                     <h4>${collection.name}</h4>
-                    <span class="collection-likes">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="#3dd5e1">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                        </svg>
-                        ${collection.likes || 0}
-                    </span>
+                    <span class="collection-likes">❤️ ${collection.likes || 0}</span>
                 </div>
                 <div class="collection-meta">
                     <span>${collection.nftCount} items Created by</span>
                     <div class="creator-mini">
-                        <img src="${user?.profileImage ||collection.imageUrl }" alt="Creator">
+                        <img src="${user?.profileImage || collection.imageUrl}" alt="Creator">
                         <span>@${user?.username || 'unknown'}</span>
                     </div>
                 </div>
             </div>
-        </div>
-        `;
+        </div>`;
     }
-
     container.innerHTML = html;
 }
 
 /* =========================
    REDIRECT HELPERS
 ========================= */
-function goToBid(nftId) {
-    window.location.href = `artwork.html?id=${nftId}`;
-}
-
 function handleCardKey(e, nftId) {
     if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        goToBid(nftId);
+        openArtworkModal(nftId);
     }
 }
 
-function goToCollection(collectionId) {
-    window.location.href = `collection.html?id=${collectionId}`;
+function goToArtist(username) { window.location.href = `artist.html?name=${encodeURIComponent(username)}`; }
+function goToCollection(collectionId) { window.location.href = `collection.html?id=${collectionId}`; }
+
+/* =========================
+   AUCTIONS & EXHIBITIONS
+========================= */
+/* =========================
+   MODAL SETUP
+========================= */
+/* =========================
+   MODAL SETUP
+========================= */
+const popupModal = document.getElementById('popupModal');
+const modalContent = document.getElementById('modalContent');
+const modalClose = document.getElementById('modalClose');
+let countdownInterval = null;
+
+// modalClose.addEventListener('click', closeModal);
+// popupModal.addEventListener('click', e => { if (e.target === popupModal) closeModal(); });
+
+// function closeModal() {
+//     popupModal.style.display = 'none';
+//     if (countdownInterval) clearInterval(countdownInterval);
+//     countdownInterval = null;
+// }
+
+// function showPopup(contentHtml) {
+//     modalContent.innerHTML = contentHtml;
+//     popupModal.style.display = 'flex';
+// }
+
+/* =========================
+   AUCTIONS MODAL WITH LIVE COUNTDOWN
+========================= */
+
+function placeBid(auctionId) {
+    alert('Bid button clicked for auction: ' + auctionId);
 }
-</script>
+
+function openAuctionModal(id) {
+    const auction = allAuctions.find(a => a._id === id);
+    if (!auction) return;
+
+    function updateCountdown() {
+        const t = getTimeLeft(new Date(auction.endTime));
+        const countdownText = `${t.hours}h ${t.minutes}m ${t.seconds}s`;
+        const countdownSpan = modalContent.querySelector('.auction-countdown');
+        if (countdownSpan) countdownSpan.textContent = countdownText;
+        if (t.hours === 0 && t.minutes === 0 && t.seconds === 0) clearInterval(countdownInterval);
+    }
+
+    const t = getTimeLeft(new Date(auction.endTime));
+    const content = `
+        <div class="nft-image">
+            <img src="${auction.imageUrl || 'https://via.placeholder.com/400'}" style="width:100%; border-radius:12px;">
+        </div>
+        <h3>${auction.title || 'Untitled Auction'}</h3>
+        <p>Current Bid: <strong>${auction.currentBid || auction.startingPrice} ETH</strong></p>
+        <p>${auction.description || 'No description available.'}</p>
+        <div style="display:flex; gap:15px; margin-top:15px;">
+            <button class="btn btn-primary btn-sm" onclick="placeBid('${auction._id}')">Place Bid</button>
+            <span class="auction-countdown">${t.hours}h ${t.minutes}m ${t.seconds}s</span>
+        </div>`;
+
+    showPopup(content);
+
+    countdownInterval = setInterval(updateCountdown, 1000);
+}
+
+/* =========================
+   EXHIBITION MODAL
+========================= */
+
+/* =========================
+   AUCTIONS & EXHIBITIONS
+========================= */
+async function loadAuctionsAndExhibitions() {
+    try {
+        const [auctionsRes, exhibitionsRes] = await Promise.all([
+            fetch('https://changes-sample.onrender.com/api/marketplace/auctions'),
+            fetch('https://changes-sample.onrender.com/api/marketplace/exhibitions')
+        ]);
+        if (!auctionsRes.ok || !exhibitionsRes.ok) throw new Error('Failed to fetch data');
+        allAuctions = await auctionsRes.json();
+        allExhibitions = await exhibitionsRes.json();
+        renderAuctions();
+        renderExhibitions();
+    } catch (err) {
+        console.error('Error loading auctions/exhibitions:', err);
+    }
+}
+
+function getTimeLeft(endTime) {
+    const now = new Date();
+    const diff = Math.max(0, endTime - now);
+    return {
+        hours: Math.floor(diff / (1000 * 60 * 60)),
+        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((diff % (1000 * 60)) / 1000)
+    };
+}
+
+function renderAuctions() {
+    const grid = document.getElementById('auctionsGrid');
+    const activeAuctions = allAuctions.filter(a => {
+        const now = new Date();
+        return new Date(a.startTime) <= now && new Date(a.endTime) > now;
+    });
+
+    if (!activeAuctions.length) {
+        grid.innerHTML = '<div class="col-12 text-center text-muted py-4">No live auctions at the moment</div>';
+        return;
+    }
+
+    grid.innerHTML = activeAuctions.slice(0, 4).map(a => {
+        const t = getTimeLeft(new Date(a.endTime));
+        return `
+        <div class="nft-card" onclick="openAuctionModal('${a._id}')">
+            <div class="nft-image"><img src="${a.imageUrl || 'https://via.placeholder.com/400'}" alt="${a.title}"></div>
+            <div class="nft-info">
+                <h3>${a.title || 'Untitled Auction'}</h3>
+                <p>Current Bid: <strong>${a.currentBid || a.startingPrice} ETH</strong></p>
+                <span>${t.hours}h ${t.minutes}m ${t.seconds}s left</span>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function renderExhibitions() {
+    const grid = document.getElementById('exhibitionsGrid');
+    if (!allExhibitions.length) {
+        grid.innerHTML = '<div class="col-12 text-center text-muted py-4">No exhibitions available</div>';
+        return;
+    }
+
+    grid.innerHTML = allExhibitions.slice(0, 4).map(e => `
+    
+        <div class="nft-card"  >
+            <div class="nft-image"><img src="${e.thumbnailUrl || 'https://via.placeholder.com/400'}" alt="${e.title}"></div>
+            <div class="nft-info">
+                <h3>${e.title || 'Untitled Exhibition'}</h3>
+                <p>${e.description || 'No description'}</p>
+                <span>${new Date(e.startDate).toLocaleDateString()}</span>
+                
+            </div>
+        </div>
+    `).join('');
+}
+
+function openExhibitionView(exhibitionId) {
+  const exhibition = allExhibitions.find(e => e._id === exhibitionId);
+  if (!exhibition) return;
+
+  document.getElementById("exhibitionModalTitle").textContent =
+    exhibition.title;
+
+  document.getElementById("exhibitionModalBody").innerHTML = `
+    <img 
+      src="${exhibition.thumbnailUrl || 'https://via.placeholder.com/800x400'}"
+      class="img-fluid rounded mb-3"
+      alt="${exhibition.title}"
+    />
+
+    <p class="text-muted">${exhibition.description || "No description"}</p>
+
+    <div class="d-flex gap-3 flex-wrap">
+      <span class="badge bg-primary">${exhibition.type || "Virtual"}</span>
+      <span class="badge bg-outline-secondary">
+        ${new Date(exhibition.startDate).toLocaleDateString()}
+      </span>
+    </div>
+  `;
+
+  const modal = new bootstrap.Modal(
+    document.getElementById("exhibitionViewModal")
+  );
+
+  modal.show();
+}
+
+/* =========================
+   MODAL OPEN FUNCTIONS
+========================= */
+
+/* =========================
+   PLACE BID (example)
+========================= */
+
+/* =========================
+   INITIAL LOAD
+========================= */
 </script>
