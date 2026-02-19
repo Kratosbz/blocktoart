@@ -1100,25 +1100,388 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="vx-header">
-        <div class="vx-header-inner">
-            <a href="/index.html" class="vx-logo">
-                <div class="vx-logo-icon">
-                   
-                </div>
-                <img src="./logo.png" width="150" height="50" alt="">
-            </a>
+    <body>
+  <!-- Header -->
+<!-- Header -->
+   <style>
+ .mainHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 32px 16px 32px;
+    background: transparent;
+    gap: 24px;
+    position: relative;
+    color: #000000;
+   
+    /* Bottom shadow */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+
+        .brandLogo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            z-index: 1001;
+        }
+
+        .logoImage {
+            height: 40px;
+            width: 40px;
+            background: #ffffff;
+            border-radius: 8px;
+        }
+
+        .navigationMenu {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+             color: #000000;
             
-            <div class="vx-search-container">
-                <i class="bi bi-search vx-search-icon"></i>
-                <input type="text" class="vx-search-input" id="searchInput" placeholder="Search collections, NFTs, creators...">
-                <span class="vx-search-shortcut">⌘K</span>
-                <div class="vx-search-dropdown" id="searchDropdown"></div>
-            </div>
-            
-            
+        }
+
+        .navDropdown {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+             color: #000000;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.2s;
+            background:#ffffff;
+            border: none;
+        }
+
+        .navDropdown:hover {
+            color: #a0a0a0;
+        }
+
+        .dropdownIcon {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.2s;
+        }
+
+        .navDropdown:hover .dropdownIcon {
+            transform: rotate(180deg);
+        }
+
+        .searchContainer {
+            flex: 1;
+            max-width: 500px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: transparent;
+            padding: 10px 16px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .searchContainer:focus-within {
+            background: #4a4a4a;
+        }
+
+        .searchIcon {
+            width: 20px;
+            height: 20px;
+            opacity: 0.6;
+        }
+
+        .searchInput {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 15px;
+        }
+
+        .searchInput::placeholder {
+            color: #888888;
+        }
+
+        .searchShortcut {
+            padding: 4px 8px;
+            background: #4a4a4a;
+            border-radius: 4px;
+            color: #888888;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .headerActions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .signInButton {
+            padding: 10px 24px;
+            background: #5b5bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .signInButton:hover {
+            background: #4a4aee;
+        }
+
+        .menuButton {
+            display: none;
+            padding: 8px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .menuIcon {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Mobile Search Modal */
+        .mobileSearchModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .mobileSearchModal.active {
+            display: flex;
+            flex-direction: column;
+            background: transparent;
+        }
+
+        .searchModalContent {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+            color: #000;
+            margin: 20px auto;
+        }
+
+        .searchModalHeader {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .searchModalInput {
+            flex: 1;
+            background: #faf9f9;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 16px;
+            padding: 12px 16px;
+            border-radius: 8px;
+        }
+
+        .searchModalInput::placeholder {
+            color: #888888;
+        }
+
+        .cancelButton {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 15px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .categoryList {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .categoryItem {
+            padding: 16px 20px;
+            color: #000;
+            font-size: 16px;
+            text-decoration: none;
+           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+            transition: background 0.2s;
+        }
+
+        .categoryItem:hover {
+            background: #3a3a3a;
+        }
+
+        .categoryItem:last-child {
+            border-bottom: none;
+        }
+
+        /* Mobile Menu Overlay - REMOVED, not needed */
+
+        @media (max-width: 1024px) {
+            .navigationMenu {
+                display: none;
+            }
+
+            .searchContainer {
+                display: none;
+            }
+
+            .menuButton {
+                display: block;
+            }
+
+            .headerActions {
+                gap: 12px;
+            }
+
+            .searchIconButton {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .searchIconButton {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mainHeader {
+                padding: 12px 16px;
+            }
+        }
+    </style>
+<link rel="stylesheet" href="./footer.css">
+
+</head>
+<body>
+    <header class="mainHeader">
+        <a href="/" class="brandLogo">
+            <div class="logoImage"></div>
+        </a>
+
+        <nav class="navigationMenu">
+            <button class="navDropdown">
+                Explore
+                <svg class="dropdownIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
+            </button>
+            <button class="navDropdown">
+                Resources
+                <svg class="dropdownIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
+            </button>
+        </nav>
+
+        <div class="searchContainer">
+            <svg class="searchIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <input type="text" class="searchInput" placeholder="Search Exchange">
+            <span class="searchShortcut">Ctrl K</span>
+        </div>
+
+        <div class="headerActions">
+            <button class="searchIconButton" onclick="toggleSearch()">
+                <svg class="searchIcon" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+            </button>
+            <button class="signInButton">Sign in</button>
+            <button class="menuButton" onclick="toggleSearch()">
+                <svg class="menuIcon" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
         </div>
     </header>
+
+    <!-- Mobile Search Modal -->
+    <div class="mobileSearchModal" id="searchModal" onclick="closeSearchIfOutside(event)">
+        <div class="searchModalContent" onclick="event.stopPropagation()">
+            <div class="searchModalHeader">
+                <svg class="searchIcon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" class="searchModalInput" placeholder="Search Exchange" id="searchInput" autofocus>
+                <button class="cancelButton" onclick="toggleSearch()">Cancel</button>
+
+ <input type="text" class="searchModalInput" placeholder="Search Exchange" id="searchInput" autofocus>
+                <button class="cancelButton" onclick="toggleSearch()">Cancel</button>
+            </div>
+            <div class="categoryList">
+                <a href="#" class="categoryItem">Music</a>
+                <a href="#" class="categoryItem">Painting</a>
+                <a href="#" class="categoryItem">Photography</a>
+                <a href="#" class="categoryItem">Physical</a>
+                <a href="#" class="categoryItem">Pixel Art</a>
+                <a href="#" class="categoryItem">Poetry</a>
+                <a href="#" class="categoryItem">Profile Picture</a>
+                <a href="#" class="categoryItem">Sculpture</a>
+                <a href="#" class="categoryItem">Street Art</a>
+                <a href="#" class="categoryItem">Textile Art</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSearch() {
+            const modal = document.getElementById('searchModal');
+            modal.classList.toggle('active');
+        }
+
+        function closeSearchIfOutside(event) {
+            if (event.target.id === 'searchModal') {
+                toggleSearch();
+            }
+        }
+
+         // Wait for the DOM to load
+    document.addEventListener('DOMContentLoaded', () => {
+        const categoryLinks = document.querySelectorAll('.categoryItem');
+
+        categoryLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent the default anchor behavior
+                const categoryName = link.textContent.trim(); // Get the text inside the link
+                const url = `category.html?category=${encodeURIComponent(categoryName)}`;
+                window.location.href = url; // Redirect to category.html with parameter
+            });
+        });
+    });
+    </script>
     
     
     
@@ -1127,84 +1490,209 @@
     <!-- Marketplace Section -->
     <section class="vx-section" id="marketplace">
         
-        <h2 class="vx-section-title" style="margin-bottom: 2rem;">
-            <span><i class="bi bi-shop me-2"></i></span>Marketplace
-        </h2>
+        <!-- <h2 class="vx-section-title" style="margin-bottom: 2rem;">
+            <span><i class="bi bi-shop me-2"></i></span>Browse Art
+        </h2> -->
         
         <!-- Explore by Category -->
-    <section class="vx-section" id="categories">
-       
-        
-        <div class="vx-categories-grid" id="categoriesContainer">
-            <div class="vx-category-card active" data-category="all">
-                <div class="vx-category-icon blue"><i class="bi bi-grid-3x3-gap-fill"></i></div>
-                <div class="vx-category-info">
-                    <h6>All Categories</h6>
-                    <small>Browse everything</small>
-                </div>
-            </div>
-            <!-- <div class="vx-category-card" data-category="Gaming">
-                <div class="vx-category-icon blue"><i class="bi bi-controller"></i></div>
-                <div class="vx-category-info">
-                    <h6>Gaming</h6>
-                    <small>Game assets & collectibles</small>
-                </div>
-            </div> -->
-            <div class="vx-category-card" data-category="Art">
-                <div class="vx-category-icon pink"><i class="bi bi-palette-fill"></i></div>
-                <div class="vx-category-info">
-                    <h6> Art</h6>
-                    <small>Creative digital artwork</small>
-                </div>
-            </div>
-            <div class="vx-category-card" data-category="Photography">
-                <div class="vx-category-icon teal"><i class="bi bi-camera-fill"></i></div>
-                <div class="vx-category-info">
-                    <h6>Photography</h6>
-                    <small>Photographic NFTs</small>
-                </div>
-            </div>
-            <div class="vx-category-card" data-category="Music">
-                <div class="vx-category-icon red"><i class="bi bi-music-note-beamed"></i></div>
-                <div class="vx-category-info">
-                    <h6>Music</h6>
-                    <small>Audio & music NFTs</small>
-                </div>
-            </div>
-            <!-- <div class="vx-category-card" data-category="Sports">
-                <div class="vx-category-icon orange"><i class="bi bi-trophy-fill"></i></div>
-                <div class="vx-category-info">
-                    <h6>Sports</h6>
-                    <small>Sports memorabilia</small>
-                </div>
-            </div> -->
-            <!-- <div class="vx-category-card" data-category="Fashion">
-                <div class="vx-category-icon pink"><i class="bi bi-handbag-fill"></i></div>
-                <div class="vx-category-info">
-                    <h6>Fashion</h6>
-                    <small>Digital fashion</small>
-                </div>
-            </div> -->
-            <!-- <div class="vx-category-card" data-category="3D Art">
-                <div class="vx-category-icon blue"><i class="bi bi-box"></i></div>
-                <div class="vx-category-info">
-                    <h6>3D Art</h6>
-                    <small>3D models & sculptures</small>
-                </div>
-            </div> -->
-            <div class="vx-category-card" data-category="Video">
-                <div class="vx-category-icon purple"><i class="bi bi-play-circle-fill"></i></div>
-                <div class="vx-category-info">
-                    <h6>Animated</h6>
-                    <small>Animated artworks</small>
-                </div>
-            </div>
-        </div>
-        
-        
-    </section>
+    <!-- Browse Section -->
+  <!-- Browse Section -->
+<section class="browse-section">
+  <h2 class="section-title">Browse</h2>
+  <div class="browse-grid">
+
+    <!-- All -->
+    <a href="#" class="browse-card" data-category="all">
+      <div class="browse-icon">
+        <img src="https://ext.same-assets.com/1288399759/2228689548.svg" alt="All Categories">
+      </div>
+      <span class="browse-label">All</span>
+    </a>
+
+    <!-- Art -->
+    <a href="#" class="browse-card" data-category="Art">
+      <div class="browse-icon">
+        <img src="https://ext.same-assets.com/1288399759/2362828911.svg" alt="Art">
+      </div>
+      <span class="browse-label">Art</span>
+    </a>
+
+    <!-- Photography -->
+    <a href="#" class="browse-card" data-category="Photography">
+      <div class="browse-icon">
+        <img src="https://ext.same-assets.com/1288399759/803308858.svg" alt="Photography">
+      </div>
+      <span class="browse-label">Photography</span>
+    </a>
+
+    <!-- Music -->
+    <a href="#" class="browse-card" data-category="Music">
+      <div class="browse-icon">
+        <img src="https://ext.same-assets.com/1288399759/2129115242.svg" alt="Music">
+      </div>
+      <span class="browse-label">Music</span>
+    </a>
+
+    <!-- Animated (Video) -->
+    <a href="#" class="browse-card" data-category="Video">
+      <div class="browse-icon">
+        <img src="https://ext.same-assets.com/1288399759/620544987.svg" alt="Animated">
+      </div>
+      <span class="browse-label">Animated</span>
+    </a>
+
+    <!-- Extra 1: Collectibles -->
+    <a href="#" class="browse-card" data-category="Collectibles">
+      <div class="browse-icon">
+        <img src="https://ext.same-assets.com/1288399759/513297910.svg" alt="Collectibles">
+      </div>
+      <span class="browse-label">Collectibles</span>
+    </a>
+
+    <!-- Extra 2: Gaming -->
+   
+
+  </div>
+</section>
+
     
-    
+    <style>
+        /* ===== Browse Section (Exchange Style) ===== */
+.browse-section {
+  max-width: 1280px;
+  margin: 10px auto;
+  padding: 0 24px;
+}
+
+.section-title {
+  font-size: 42px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 28px;
+}
+
+/* Desktop layout (like screenshot) */
+.browse-grid {
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scrollbar-width: none;
+}
+
+.browse-grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* Card */
+.browse-card {
+  min-width: 190px;
+  height: 200px;
+  background: #f6f7f9;
+  border-radius: 18px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  border: 1px solid #e6e8ec;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.browse-card:hover {
+  transform: translateY(-6px);
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  border-color: #e2e5ea;
+}
+
+/* Dark circle icon container (matches image) */
+.browse-icon {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: #0b0f1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.browse-icon img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: brightness(1.1);
+}
+
+/* Label */
+.browse-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1f2937;
+  text-align: center;
+}
+
+/* ===== Mobile: 3x3 Grid (as requested) ===== */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
+
+  .browse-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    overflow: hidden;
+  }
+
+  .browse-card {
+    min-width: unset;
+    width: 100%;
+    height: 130px;
+    border-radius: 16px;
+    gap: 10px;
+  }
+
+  .browse-icon {
+    width: 70px;
+    height: 70px;
+  }
+
+  .browse-icon img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .browse-label {
+    font-size: 13px;
+  }
+}
+
+    </style>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const browseCards = document.querySelectorAll('.browse-card');
+
+  browseCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const label = card.querySelector('.browse-label');
+      if (!label) return;
+
+      const categoryName = label.textContent.trim();
+      const url = `category.html?category=${encodeURIComponent(categoryName)}`;
+
+      window.location.href = url;
+    });
+  });
+});
+</script>
+
         
         <div class="vx-tabs">
             <button class="vx-tab active" data-tab="all">All Items</button>
@@ -1240,36 +1728,101 @@
     
     
     <!-- Footer -->
-    <footer class="vx-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <h4 class="mb-3" style="display: flex; align-items: center; gap: 0.5rem;">
-                       
-                       <img src="./logo.png" width="150" height="50" alt="">
-                    </h4>
-                    <p class="text-white-50">The premier NFT marketplace for digital art collectors and creators.</p>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <h6 class="mb-3">Quick Links</h6>
-                    <div>
-                        <a href="/index.html">Explore</a>
-                        <a href="/dashboard.html">Dashboard</a>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <h6 class="mb-3">Community</h6>
-                    <div>
-                        <a href="#"><i class="bi bi-twitter me-1"></i>Twitter</a>
-                        <a href="#"><i class="bi bi-discord me-1"></i>Discord</a>
-                    </div>
-                </div>
-            </div>
-            <hr class="border-secondary">
-            <p class="text-white-50 mb-0 text-center">2024 Blocktoart. All rights reserved.</p>
+    <footer>
+    <div class="container" style="max-width: 100%; padding: 0;">
+      <div class="footer-header">
+        <div class="footer-logo">
+          <img src="https://ext.same-assets.com/1288399759/1188727251.svg" alt="Exchange.Art">
+          <span class="footer-logo-text">exchange<span>art</span></span>
         </div>
-    </footer>
-    
+        <div class="theme-toggle">
+          <div class="toggle-switch"></div>
+          Dark
+        </div>
+      </div>
+      <p class="footer-tagline">Collect & sell digital fine art</p>
+
+      <div class="footer-links">
+        <div class="footer-column">
+          <h4>Marketplace</h4>
+          <ul>
+            <li><a href="#">Artworks</a></li>
+            <li><a href="#">Editions</a></li>
+            <li><a href="#">Series</a></li>
+            <li><a href="#">Profiles</a></li>
+            <li><a href="#">Leaderboards</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">ArtDrop</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Helpdesk</a></li>
+            <li><a href="#">Suggest a feature</a></li>
+            <li><a href="#">Branding</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Account</h4>
+          <ul>
+            <li><a href="#">Sign up</a></li>
+            <li><a href="#">Sign in</a></li>
+            <li><a href="#">Legacy Sign In</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Community</h4>
+          <div class="social-links">
+            <a href="#"><img src="https://ext.same-assets.com/1288399759/2388733996.svg" alt="X"></a>
+            <a href="#"><img src="https://ext.same-assets.com/1288399759/1750959219.svg" alt="YouTube"></a>
+            <a href="#"><img src="https://ext.same-assets.com/1288399759/2443148422.svg" alt="Instagram"></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>Copyright 2026 EXCHANGE.ART, All rights reserved</span>
+        <div class="footer-legal">
+          <a href="#">Terms of service</a>
+          <a href="#">Privacy policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  // Footer category redirect (updated for new categories)
+  document.addEventListener('DOMContentLoaded', () => {
+    const footerLinks = document.querySelectorAll('.footer-column ul li a');
+
+    // Valid categories based on your filter system
+    const validCategories = [
+      'all',
+      'art',
+      'photography',
+      'music',
+      'video',
+      'collectibles',
+      'gaming'
+    ];
+
+    footerLinks.forEach(link => {
+      const categoryName = link.textContent.trim();
+      const categoryLower = categoryName.toLowerCase();
+
+      // Only redirect if the footer link matches a real category
+      if (validCategories.includes(categoryLower)) {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const url = `category.html?category=${encodeURIComponent(categoryName)}`;
+          window.location.href = url;
+        });
+      }
+    });
+  });
+</script>
+
     <!-- Artwork Modal -->
     <div class="vx-modal-overlay" id="artworkModal">
         <div class="vx-modal">
