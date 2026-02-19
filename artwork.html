@@ -457,16 +457,21 @@
 </head>
 <body>
  <!-- Header -->
-   <style>
+      <style>
  .mainHeader {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0px 32px 16px 32px;
-            background: #333333;
-            gap: 24px;
-            position: relative;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 32px 16px 32px;
+    background: transparent;
+    gap: 24px;
+    position: relative;
+    color: #000000;
+   
+    /* Bottom shadow */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
 
         .brandLogo {
             display: flex;
@@ -486,19 +491,21 @@
             display: flex;
             align-items: center;
             gap: 32px;
+             color: #000000;
+            
         }
 
         .navDropdown {
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #ffffff;
+             color: #000000;
             font-size: 16px;
             font-weight: 500;
             text-decoration: none;
             cursor: pointer;
             transition: color 0.2s;
-            background: transparent;
+            background:#ffffff;
             border: none;
         }
 
@@ -612,14 +619,16 @@
         .mobileSearchModal.active {
             display: flex;
             flex-direction: column;
+            background: transparent;
         }
 
         .searchModalContent {
-            background: #2a2a2a;
+            background: #ffffff;
             border-radius: 12px;
             padding: 20px;
             max-width: 500px;
             width: 100%;
+            color: #000;
             margin: 20px auto;
         }
 
@@ -632,7 +641,7 @@
 
         .searchModalInput {
             flex: 1;
-            background: #3a3a3a;
+            background: #faf9f9;
             border: none;
             outline: none;
             color: #ffffff;
@@ -662,10 +671,11 @@
 
         .categoryItem {
             padding: 16px 20px;
-            color: #ffffff;
+            color: #000;
             font-size: 16px;
             text-decoration: none;
-            border-bottom: 1px solid #3a3a3a;
+           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
             transition: background 0.2s;
         }
 
@@ -755,14 +765,14 @@
 
         <div class="headerActions">
             <button class="searchIconButton" onclick="toggleSearch()">
-                <svg class="searchIcon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <svg class="searchIcon" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
                     <circle cx="11" cy="11" r="8"></circle>
                     <path d="m21 21-4.35-4.35"></path>
                 </svg>
             </button>
             <button class="signInButton">Sign in</button>
             <button class="menuButton" onclick="toggleSearch()">
-                <svg class="menuIcon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <svg class="menuIcon" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
                     <line x1="3" y1="12" x2="21" y2="12"></line>
                     <line x1="3" y1="6" x2="21" y2="6"></line>
                     <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -770,6 +780,62 @@
             </button>
         </div>
     </header>
+
+    <!-- Mobile Search Modal -->
+    <div class="mobileSearchModal" id="searchModal" onclick="closeSearchIfOutside(event)">
+        <div class="searchModalContent" onclick="event.stopPropagation()">
+            <div class="searchModalHeader">
+                <svg class="searchIcon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" class="searchModalInput" placeholder="Search Exchange" id="searchInput" autofocus>
+                <button class="cancelButton" onclick="toggleSearch()">Cancel</button>
+
+ <input type="text" class="searchModalInput" placeholder="Search Exchange" id="searchInput" autofocus>
+                <button class="cancelButton" onclick="toggleSearch()">Cancel</button>
+            </div>
+            <div class="categoryList">
+                <a href="#" class="categoryItem">Music</a>
+                <a href="#" class="categoryItem">Painting</a>
+                <a href="#" class="categoryItem">Photography</a>
+                <a href="#" class="categoryItem">Physical</a>
+                <a href="#" class="categoryItem">Pixel Art</a>
+                <a href="#" class="categoryItem">Poetry</a>
+                <a href="#" class="categoryItem">Profile Picture</a>
+                <a href="#" class="categoryItem">Sculpture</a>
+                <a href="#" class="categoryItem">Street Art</a>
+                <a href="#" class="categoryItem">Textile Art</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSearch() {
+            const modal = document.getElementById('searchModal');
+            modal.classList.toggle('active');
+        }
+
+        function closeSearchIfOutside(event) {
+            if (event.target.id === 'searchModal') {
+                toggleSearch();
+            }
+        }
+
+         // Wait for the DOM to load
+    document.addEventListener('DOMContentLoaded', () => {
+        const categoryLinks = document.querySelectorAll('.categoryItem');
+
+        categoryLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent the default anchor behavior
+                const categoryName = link.textContent.trim(); // Get the text inside the link
+                const url = `category.html?category=${encodeURIComponent(categoryName)}`;
+                window.location.href = url; // Redirect to category.html with parameter
+            });
+        });
+    });
+    </script>
 
     <!-- Mobile Search Modal -->
     <div class="mobileSearchModal" id="searchModal" onclick="closeSearchIfOutside(event)">
