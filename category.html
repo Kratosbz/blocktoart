@@ -1041,12 +1041,12 @@
     </script>
     <section class="vx-hero">
         <div class="vx-hero-content">
-            <h1>Discover NFTs</h1>
+            <h1 id="selectedCategory" ></h1>
             <p>Explore unique digital assets across all categories. Find your next collectible, artwork, or investment in our curated marketplace.</p>
-            <div class="vx-hero-search">
+            <!-- <div class="vx-hero-search">
                 <input type="text" id="heroSearchInput" placeholder="Search NFTs, collections, or creators...">
                 <button onclick="performSearch()">Search</button>
-            </div>
+            </div> -->
         </div>
     </section>
     
@@ -1255,6 +1255,8 @@
         const categoryParam = params.get('category');
         if (categoryParam) {
             currentCategory = categoryParam;
+            var selectedCategory=document.getElementById("selectedCategory")
+            selectedCategory.innerHTML=currentCategory
             document.querySelectorAll('.vx-category-item').forEach(item => {
                 item.classList.toggle('active', item.dataset.category === categoryParam);
             });
