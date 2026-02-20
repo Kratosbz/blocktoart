@@ -1230,6 +1230,7 @@
                 padding: 12px 16px;
             }
         }
+        
     </style>
 <link rel="stylesheet" href="./footer.css">
 
@@ -1345,11 +1346,465 @@
   </section>
 
   <!-- Artwork Grid -->
-  <section class="gallery-container" id="explore">
+
+  <style>
+    /* Desktop grid */
+.gallery-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 16px;
+}
+
+/* Mobile: swipeable carousel */
+/* Mobile: swipeable carousel */
+@media (max-width: 768px) {
+    .gallery-container {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: var(--carousel-gap-mobile, 16px);
+        padding: 16px;
+    }
+
+    .gallery-container::-webkit-scrollbar {
+        display: none; /* hide scrollbar */
+    }
+
+    .art-card {
+        flex: 0 0 80%; /* each card takes 80% of viewport */
+        scroll-snap-align: start;
+        margin-top: 0 !important; /* remove stagger offset for carousel */
+    }
+}
+  </style>
+  <!-- <section class="gallery-container" id="explore">
     
+<div class="carousel-nav" id="carousel-nav"></div> -->
 
 
   </section>
+
+
+  <style>
+
+    :root {
+    /* Colors */
+    --nft-bg-card: #2a2a3e;
+    --nft-bg-white: #ffffff;
+    --nft-text-primary: #ffffff;
+    --nft-text-secondary: #b8b8c8;
+    --nft-text-muted: #8888a0;
+    --nft-shadow: rgba(0, 0, 0, 0.5);
+    --nft-dot-inactive: rgba(255, 255, 255, 0.3);
+    --nft-dot-active: #ffffff;
+    --nft-accent: #5b5bff;
+    
+    /* Spacing */
+    --nft-gap-xs: 6px;
+    --nft-gap-sm: 10px;
+    --nft-gap-md: 12px;
+    --nft-gap-lg: 16px;
+    --nft-gap-xl: 20px;
+    --nft-gap-2xl: 24px;
+    --nft-gap-3xl: 30px;
+    
+    /* Sizes */
+    --nft-img-height: 320px;
+    --nft-img-height-mobile: 280px;
+    --nft-card-padding: 12px;
+    --nft-content-padding: 20px;
+    --nft-card-min-mobile: 85%;
+    --nft-stagger: 40px;
+    
+    /* Typography */
+    --nft-font-title: 20px;
+    --nft-font-price: 18px;
+    --nft-font-creator: 14px;
+    --nft-font-label: 13px;
+}
+
+/* Grid Container */
+#explore2 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--nft-gap-3xl);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--nft-gap-xl);
+    align-items: start;
+}
+
+/* Staggered middle column */
+.nftCardItem:nth-child(3n+2) {
+    margin-top: var(--nft-stagger);
+}
+
+/* Card Container */
+.nftCardItem {
+    background: var(--nft-bg-card);
+    border-radius: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    height: fit-content;
+    padding: var(--nft-card-padding);
+    padding-bottom: 0;
+}
+
+.nftCardItem:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px var(--nft-shadow);
+}
+
+/* Card Image */
+.nftCardVisual {
+    width: 100%;
+    height: var(--nft-img-height);
+    object-fit: cover;
+    display: block;
+    border-radius: 8px;
+}
+
+/* Card Body */
+.nftCardBody {
+    padding: var(--nft-content-padding);
+    background: var(--nft-bg-card);
+}
+
+/* Top Row (Title + Like) */
+.nftCardTopRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--nft-gap-lg);
+}
+
+.nftCardHeading {
+    color: var(--nft-text-primary);
+    font-size: var(--nft-font-title);
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin: 0;
+}
+
+.nftLikeBtn {
+    color: var(--nft-text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nftLikeBtn:hover {
+    color: var(--nft-text-primary);
+}
+
+/* Creator Info */
+.nftCreatorInfo {
+    display: flex;
+    align-items: center;
+    gap: var(--nft-gap-sm);
+    margin-bottom: var(--nft-gap-lg);
+}
+
+.nftCreatorLabel {
+    color: var(--nft-text-secondary);
+    font-size: var(--nft-font-creator);
+    font-weight: 500;
+}
+
+/* Price Row */
+.nftCardPriceRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--nft-gap-md);
+}
+
+.nftPriceBlock {
+    display: flex;
+    flex-direction: column;
+    gap: var(--nft-gap-xs);
+}
+
+.nftPriceLabel {
+    color: var(--nft-text-muted);
+    font-size: var(--nft-font-label);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.nftPriceAmount {
+    color: var(--nft-text-primary);
+    font-size: var(--nft-font-price);
+    font-weight: 600;
+    letter-spacing: -0.2px;
+}
+
+/* Bid Button */
+.nftBidAction {
+    background: var(--nft-accent);
+    color: var(--nft-bg-white);
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.nftBidAction:hover {
+    background: #4a4aee;
+}
+
+/* Empty State */
+.nftEmptyMessage {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--nft-text-muted);
+}
+
+.nftEmptyMessage h4 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--nft-text-secondary);
+}
+
+/* Carousel Dots */
+.nftCarouselDots {
+    display: none;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.nftCarouselDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--nft-dot-inactive);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+.nftCarouselDot.nftDotActive {
+    background: var(--nft-dot-active);
+    width: 24px;
+    border-radius: 4px;
+}
+
+/* Tablet View */
+@media (min-width: 769px) and (max-width: 1024px) {
+    #explore2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .nftCardItem:nth-child(3n+2) {
+        margin-top: 0;
+    }
+    
+    .nftCardItem:nth-child(2n) {
+        margin-top: var(--nft-stagger);
+    }
+}
+
+/* Mobile Carousel */
+@media (max-width: 768px) {
+    #explore2 {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 16px;
+        padding: var(--nft-gap-xl);
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        margin: 0;
+    }
+    
+    #explore2::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .nftCardItem {
+        min-width: var(--nft-card-min-mobile);
+        scroll-snap-align: center;
+        margin-top: 0 !important;
+        flex-shrink: 0;
+    }
+    
+    .nftCardVisual {
+        height: var(--nft-img-height-mobile);
+    }
+    
+    .nftCarouselDots {
+        display: flex;
+    }
+}
+  </style>
+
+  <div id="explore2">
+    <!-- NFT cards go here -->
+    <div class="nftCardItem">...</div>
+    <div class="nftCardItem">...</div>
+    <div class="nftCardItem">...</div>
+</div>
+<div class="nftCarouselDots" style="margin-bottom: 20px;">
+    <!-- Dots injected here by JavaScript -->
+    <button class="nftCarouselDot nftDotActive"></button>
+    <button class="nftCarouselDot"></button>
+    <button class="nftCarouselDot"></button>
+</div>
+
+
+<script>
+async function loadMarketplaceData2() {
+    try {
+        const res = await fetch('https://changes-sample.onrender.com/api/marketplace/nfts');
+        if (!res.ok) throw new Error('Failed to fetch NFTs');
+        allNFTs = await res.json();
+        renderNFTGrid2(allNFTs);
+       
+    } catch (err) {
+        console.error('Failed to load marketplace data:', err);
+    }
+}
+
+
+    // New function with different class names
+function renderNFTCard2(nft) {
+    const creatorsHTML = (nft.creators && nft.creators.length)
+        ? nft.creators.map(c => `
+            <div class="nftCreatorInfo">
+                <span class="nftCreatorLabel">@${c.username}</span>
+            </div>
+        `).join('')
+        : `<div class="nftCreatorInfo">
+                <span class="nftCreatorLabel">@${nft.creator || 'unknown'}</span>
+           </div>`;
+    
+    return `
+    <div class="nftCardItem"
+         role="link"
+         tabindex="0"
+         onclick="openArtworkModal('${nft._id}')"
+         onkeydown="handleCardKey(event, '${nft._id}')">
+        <img src="${nft.imageUrl}" alt="${nft.name}" class="nftCardVisual">
+        <div class="nftCardBody">
+            <div class="nftCardTopRow">
+                <h3 class="nftCardHeading">${nft.name}</h3>
+                <span class="nftLikeBtn"
+                      onclick="event.stopPropagation(); toggleLike('${nft._id}')">
+                    <i class="fa-regular fa-thumbs-up"></i> ${nft.likes || 0}
+                </span>
+            </div>
+            ${creatorsHTML}
+            <div class="nftCardPriceRow">
+                <div class="nftPriceBlock">
+                    <span class="nftPriceLabel">Price</span>
+                    <span class="nftPriceAmount">${nft.price ? nft.price.toFixed(2) + (nft.currency || ' ETH') : 'Not listed'}</span>
+                </div>
+                <a href="#" class="nftBidAction" onclick="event.stopPropagation(); openArtworkModal('${nft._id}')">
+                    Place Bid
+                </a>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderNFTGrid2(nfts) {
+    const grid = document.getElementById('explore2');
+    if (!grid) return;
+    
+    if (!nfts || nfts.length === 0) {
+        grid.innerHTML = `
+            <div class="nftEmptyMessage">
+                <h4>No artworks found</h4>
+                <p>Try adjusting your filters or search</p>
+            </div>
+        `;
+        return;
+    }
+    
+    grid.innerHTML = nfts.slice(0, MAX_GRID_ITEMS).map(renderNFTCard2).join('');
+    
+    // Initialize carousel for mobile
+    initNFTCarousel();
+}
+
+// Mobile carousel initialization
+function initNFTCarousel() {
+    if (window.innerWidth > 768) return; // Desktop only shows grid
+    
+    const grid = document.getElementById('explore');
+    if (!grid) return;
+    
+    const cards = grid.querySelectorAll('.nftCardItem');
+    if (cards.length === 0) return;
+    
+    // Create dots container
+    let dotsContainer = document.querySelector('.nftCarouselDots');
+    if (!dotsContainer) {
+        dotsContainer = document.createElement('div');
+        dotsContainer.className = 'nftCarouselDots';
+        grid.parentNode.insertBefore(dotsContainer, grid.nextSibling);
+    }
+    
+    // Clear and create dots
+    dotsContainer.innerHTML = '';
+    cards.forEach((_, index) => {
+        const dot = document.createElement('button');
+        dot.className = 'nftCarouselDot';
+        if (index === 0) dot.classList.add('nftDotActive');
+        dot.dataset.index = index;
+        
+        dot.addEventListener('click', () => {
+            const cardWidth = cards[0].offsetWidth + 16; // card width + gap
+            grid.scrollTo({
+                left: cardWidth * index,
+                behavior: 'smooth'
+            });
+        });
+        
+        dotsContainer.appendChild(dot);
+    });
+    
+    // Update active dot on scroll
+    grid.addEventListener('scroll', () => {
+        const cardWidth = cards[0].offsetWidth + 16;
+        const activeIndex = Math.round(grid.scrollLeft / cardWidth);
+        
+        dotsContainer.querySelectorAll('.nftCarouselDot').forEach((dot, index) => {
+            dot.classList.toggle('nftDotActive', index === activeIndex);
+        });
+    });
+}
+
+// Re-initialize on window resize
+window.addEventListener('resize', () => {
+    initNFTCarousel();
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderNFTGrid2();
+    loadMarketplaceData2();
+});
+</script>
+
+
+
+
+
+
+  
 <style>
     :root {
       /* Color palette */
@@ -2369,7 +2824,7 @@
 
   <!-- Browse Section -->
   <section class="browse-section">
-    <h2 class="section-title">Browse</h2>
+    <h2 class="">Browse</h2>
     <div class="browse-grid">
       <a href="#" class="browse-card">
         <div class="browse-icon">
@@ -3190,6 +3645,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await renderGemsCard();
     await  renderFeaturedCard();
     mapNFTsToCollections();
+    updateCarouselDots();
     renderCollections();
 
     loadAuctionsAndExhibitions();
@@ -3259,6 +3715,23 @@ async function loadTopArtists() {
     } catch (err) {
         console.error('Error loading top artists:', err);
     }
+}
+function updateCarouselDots() {
+    const container = document.getElementById('explore');
+    const nav = document.getElementById('carousel-nav');
+    if (!container || !nav) return;
+
+    const cards = container.querySelectorAll('.art-card');
+    nav.innerHTML = cards.map((_, i) => `<button class="carousel-dot" data-index="${i}"></button>`).join('');
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            const dot = nav.querySelector(`.carousel-dot[data-index="${Array.from(cards).indexOf(entry.target)}"]`);
+            if (dot) dot.classList.toggle('active', entry.isIntersecting);
+        });
+    }, { root: container, threshold: 0.6 });
+
+    cards.forEach(card => observer.observe(card));
 }
 
 function initArtistCarousel() {

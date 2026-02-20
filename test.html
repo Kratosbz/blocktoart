@@ -1,228 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Photography</title>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NFT Gallery Carousel</title>
+<script src="https://kit.fontawesome.com/a2e7b84b49.js" crossorigin="anonymous"></script>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+:root {
+  --color-background-primary: #1a1a2e;
+  --color-background-secondary: #2d2d44;
+  --color-card-background: #2a2a3e;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #b8b8c8;
+  --color-text-muted: #8888a0;
+  --color-shadow: rgba(0,0,0,0.5);
+  --color-dot-inactive: rgba(255,255,255,0.3);
+  --color-dot-active: #ffffff;
+
+  --spacing-xs: 6px; --spacing-sm: 10px; --spacing-md: 12px; --spacing-lg: 16px;
+  --spacing-xl: 20px; --spacing-2xl: 24px; --spacing-3xl: 30px; --spacing-4xl: 40px;
+
+  --radius-sm:4px; --radius-md:8px; --radius-lg:16px; --radius-full:50%;
+
+  --card-image-height:320px; --card-image-height-mobile:280px;
+  --card-padding:12px; --card-info-padding:20px;
+  --card-stagger-offset:40px; --container-max-width:1400px;
+
+  --avatar-size:32px;
+
+  --font-size-title:20px; --font-size-price-value:18px; --font-size-artist:14px; --font-size-price-label:13px;
+  --font-weight-semibold:600; --font-weight-medium:500;
+  --letter-spacing-tight:-0.3px; --letter-spacing-normal:-0.2px; --letter-spacing-wide:0.5px;
+
+  --transition-default:0.3s ease; --transition-fast:0.2s;
+
+  --carousel-dot-size:8px; --carousel-dot-active-width:24px; --carousel-gap-mobile:16px;
+}
+
+/* GLOBAL */
+* {margin:0; padding:0; box-sizing:border-box;}
+body {
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  background: linear-gradient(135deg, var(--color-background-primary) 0%, var(--color-background-secondary) 50%, var(--color-background-primary) 100%);
+  min-height:100vh;
+  padding: var(--spacing-4xl) var(--spacing-xl);
+}
+
+/* GALLERY CONTAINER */
+.gallery-container {
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: var(--spacing-3xl);
+  max-width: var(--container-max-width);
+  margin:0 auto;
+  padding: var(--spacing-xl);
+  align-items:start;
+}
+.art-card:nth-child(3n+2){ margin-top: var(--card-stagger-offset); }
+
+/* CARD STYLES */
+.art-card {
+  background: var(--color-card-background);
+  border-radius: var(--radius-lg);
+  transition: transform var(--transition-default), box-shadow var(--transition-default);
+  cursor:pointer;
+  height: fit-content;
+  padding: var(--card-padding);
+  padding-bottom:0;
+}
+.art-card:hover {
+  transform: translateY(-8px);
+  box-shadow:0 12px 40px var(--color-shadow);
+}
+.art-card__image {
+  width:100%;
+  height: var(--card-image-height);
+  object-fit: cover;
+  display:block;
+  border-radius: var(--radius-md);
+}
+.art-card__content {
+  padding: var(--card-info-padding);
+  background: var(--color-card-background);
+}
+.art-card__header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom: var(--spacing-lg);
+}
+.art-card__title {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-tight);
+}
+.art-card__artist {
+  display:flex;
+  align-items:center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+}
+.art-card__artist-name {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-artist);
+  font-weight: var(--font-weight-medium);
+}
+.art-card__pricing {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-price-label);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.art-card__pricing span {
+  display:block;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-price-value);
+  font-weight: var(--font-weight-semibold);
+  margin-top: var(--spacing-xs);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+/* CAROUSEL DOTS */
+.carousel-nav {
+  display:none;
+  justify-content:center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-2xl);
+}
+.carousel-dot {
+  width: var(--carousel-dot-size); height: var(--carousel-dot-size);
+  border-radius: var(--radius-full); background: var(--color-dot-inactive);
+  border:none; cursor:pointer; transition:all var(--transition-default); padding:0;
+}
+.carousel-dot.active { width: var(--carousel-dot-active-width); background: var(--color-dot-active); border-radius: var(--radius-sm); }
+
+/* RESPONSIVE */
+@media (max-width:768px){
+  body { padding: var(--spacing-xl) 0; }
+  .gallery-container {
+    display:flex; overflow-x:auto; scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: var(--carousel-gap-mobile); padding: var(--spacing-xl);
   }
-
-  body {
-    background: #f5f6f8;
-    color: #111;
-  }
-
-  /* HERO */
-  .hero {
-    width: 100%;
-    height: 180px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .hero-title {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    font-size: 42px;
-    font-weight: 600;
-    color: white;
-    letter-spacing: 0.5px;
-  }
-
-  /* SECTION */
-  .section {
-    padding: 24px 20px 40px;
-  }
-
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 22px;
-  }
-
-  .section-header h2 {
-    font-size: 28px;
-    font-weight: 600;
-  }
-
-  .view-more {
-    font-size: 18px;
-    color: #4f5dff;
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  /* CREATOR LIST */
-  .creator-list {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-
-  .creator-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .creator-left {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .avatar {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-  .creator-info {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .creator-name {
-    font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 3px;
-  }
-
-  .creator-vol {
-    font-size: 16px;
-    color: #6b7280;
-  }
-
-  /* FOLLOW BUTTON */
-  .follow-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 20px;
-    border-radius: 14px;
-    border: 1px solid #e5e7eb;
-    background: #f1f2f4;
-    font-size: 18px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .follow-btn:hover {
-    background: #e7e9ee;
-  }
-
-  .heart {
-    font-size: 20px;
-  }
-
-  /* MOBILE OPTIMIZATION */
-  @media (max-width: 480px) {
-    .hero-title {
-      font-size: 36px;
-    }
-
-    .creator-name {
-      font-size: 18px;
-    }
-
-    .follow-btn {
-      padding: 10px 16px;
-      font-size: 16px;
-    }
-  }
+  .gallery-container::-webkit-scrollbar { display:none; }
+  .art-card { flex:0 0 80%; scroll-snap-align:start; margin-top:0 !important; }
+  .carousel-nav { display:flex; }
+}
+@media (min-width:769px) and (max-width:1024px){
+  .gallery-container { grid-template-columns: repeat(2,1fr); }
+  .art-card:nth-child(3n+2) { margin-top:0; }
+  .art-card:nth-child(2n) { margin-top: var(--card-stagger-offset); }
+}
 </style>
-<link rel="stylesheet" href="./footer.css">
-
 </head>
 <body>
 
-<!-- HERO -->
-<section class="hero">
-  <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" alt="Photography Banner">
-  <div class="hero-title">Photography</div>
-</section>
-
-<!-- TOP CREATORS -->
-<section class="section">
-  <div class="section-header">
-    <h2>Top Creators</h2>
-    <a href="#" class="view-more">View more →</a>
-  </div>
-
-  <div class="creator-list">
-
-    <!-- Creator 1 -->
-    <div class="creator-card">
-      <div class="creator-left">
-        <img class="avatar" src="https://i.pravatar.cc/100?img=5" />
-        <div class="creator-info">
-          <div class="creator-name">Cath Simard</div>
-          <div class="creator-vol">Vol. $164,871.71</div>
-        </div>
-      </div>
-      <button class="follow-btn">
-        <span class="heart">♡</span> Follow
-      </button>
-    </div>
-
-    <!-- Creator 2 -->
-    <div class="creator-card">
-      <div class="creator-left">
-        <img class="avatar" src="https://i.pravatar.cc/100?img=12" />
-        <div class="creator-info">
-          <div class="creator-name">Ilan Derech</div>
-          <div class="creator-vol">Vol. $64,721.09</div>
-        </div>
-      </div>
-      <button class="follow-btn">
-        <span class="heart">♡</span> Follow
-      </button>
-    </div>
-
-    <!-- Creator 3 -->
-    <div class="creator-card">
-      <div class="creator-left">
-        <img class="avatar" src="https://i.pravatar.cc/100?img=20" />
-        <div class="creator-info">
-          <div class="creator-name">7 Swords</div>
-          <div class="creator-vol">Vol. $33,176.64</div>
-        </div>
-      </div>
-      <button class="follow-btn">
-        <span class="heart">♡</span> Follow
-      </button>
-    </div>
-
-  </div>
-</section>
+<h2 style="color:white;text-align:center;margin-bottom:20px;">NFT Gallery</h2>
+<section class="gallery-container" id="explore"></section>
+<div class="carousel-nav" id="carousel-nav"></div>
 
 <script>
-  // Optional: Toggle follow UI instantly
-  document.querySelectorAll(".follow-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      if (btn.innerText.includes("Follow")) {
-        btn.innerHTML = '<span class="heart">♥</span> Following';
-      } else {
-        btn.innerHTML = '<span class="heart">♡</span> Follow';
-      }
-    });
-  });
-</script>
+const MAX_GRID_ITEMS = 20;
 
+// Renders a single card
+function renderNFTCard(nft) {
+    const creatorsHTML = (nft.creators && nft.creators.length)
+        ? nft.creators.map(c => `
+            <div class="art-card__artist">
+                <span class="art-card__artist-name">@${c.username}</span>
+            </div>
+        `).join('')
+        : `<div class="art-card__artist">
+                <span class="art-card__artist-name">@${nft.creator || 'unknown'}</span>
+           </div>`;
+
+    return `
+    <div class="art-card"
+         role="link"
+         tabindex="0"
+         onclick="openArtworkModal('${nft._id}')"
+         onkeydown="handleCardKey(event, '${nft._id}')">
+
+        <img src="${nft.imageUrl}" alt="${nft.name}" class="art-card__image">
+
+        <div class="art-card__content">
+            <div class="art-card__header">
+                <h3 class="art-card__title">${nft.name}</h3>
+                <span class="like-count"
+                      onclick="event.stopPropagation(); toggleLike('${nft._id}')">
+                    <i class="fa-regular fa-thumbs-up"></i> ${nft.likes || 0}
+                </span>
+            </div>
+
+            ${creatorsHTML}
+
+            <div class="art-card__pricing">
+                <div>
+                    Price
+                    <span>${ 'Not listed'}</span>
+                </div>
+                <a href="#" class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openArtworkModal('${nft._id}')"
+                   style="background-color: #5b5bff; color: #ffffff; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                    Place Bid
+                </a>
+            </div>
+        </div>
+    </div>`;
+}
+
+// Render grid/carousel
+function renderNFTGrid(nfts) {
+    const grid = document.getElementById('explore');
+    if (!grid) return;
+
+    if (!nfts || nfts.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1;color:white;text-align:center;">
+            <h4>No artworks found</h4>
+            <p style="color:#ccc;">Try adjusting your filters or search</p>
+        </div>`;
+        return;
+    }
+
+    grid.innerHTML = nfts.slice(0, MAX_GRID_ITEMS).map(renderNFTCard).join('');
+    updateCarouselDots();
+}
+
+// Carousel dots
+function updateCarouselDots() {
+    const container = document.getElementById('explore');
+    const nav = document.getElementById('carousel-nav');
+    if (!container || !nav) return;
+
+    const cards = container.querySelectorAll('.art-card');
+    nav.innerHTML = Array.from(cards).map((_, i) => `<button class="carousel-dot" data-index="${i}"></button>`).join('');
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            const dot = nav.querySelector(`.carousel-dot[data-index="${Array.from(cards).indexOf(entry.target)}"]`);
+            if (dot) dot.classList.toggle('active', entry.isIntersecting);
+        });
+    }, { root: container, threshold: 0.6 });
+
+    cards.forEach(card => observer.observe(card));
+}
+
+// Dummy NFT data
+const dummyNFTs = Array.from({length:10}, (_, i) => ({
+    _id: 'nft' + i,
+    name: 'NFT #' + (i+1),
+    imageUrl: 'https://picsum.photos/400/400?random=' + i,
+    creator: 'artist' + (i+1),
+    creators: [{ username: 'artist' + (i+1) }],
+    likes: Math.floor(Math.random()*100),
+    price: (Math.random()*5).toFixed(2),
+    currency: 'ETH'
+}));
+
+// Dummy handlers
+function openArtworkModal(id){ alert('Open modal for ' + id); }
+function toggleLike(id){ alert('Like toggled for ' + id); }
+function handleCardKey(e,id){ if(e.key==='Enter'){ openArtworkModal(id); } }
+
+// Initialize gallery
+renderNFTGrid(dummyNFTs);
+</script>
 </body>
 </html>
