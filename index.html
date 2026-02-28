@@ -26,8 +26,8 @@
     }
 
     :root {
-      --bg-dark: #1a1b26;
-      --bg-card-dark: #252736;
+      --bg-dark: #080808;
+      --bg-card-dark: #080808;
       --bg-white: #ffffff;
       --bg-light-blue: #e8eeff;
       --bg-gray: #f5f5f7;
@@ -1242,13 +1242,13 @@
         </a>
 
         <nav class="navigationMenu">
-            <button class="navDropdown">
+            <button class="navDropdown" onclick="window.location.href='marketplace.html'">
                 Explore
                 <svg class="dropdownIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M6 9l6 6 6-6"/>
                 </svg>
             </button>
-            <button class="navDropdown">
+            <button class="navDropdown" onclick="window.location.href='allcollections.html'">
                 Resources
                 <svg class="dropdownIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M6 9l6 6 6-6"/>
@@ -2841,37 +2841,37 @@ document.addEventListener('DOMContentLoaded', () => {
   <section class="browse-section">
     <h2 class="">Browse</h2>
     <div class="browse-grid">
-      <a href="#" class="browse-card">
+      <a href="" class="browse-card">
         <div class="browse-icon">
           <img src="https://ext.same-assets.com/1288399759/2228689548.svg" alt="Trending auctions">
         </div>
         <span class="browse-label">Trending auctions</span>
       </a>
-      <a href="#" class="browse-card">
+      <a href="" class="browse-card">
         <div class="browse-icon">
           <img src="https://ext.same-assets.com/1288399759/803308858.svg" alt="Fixed price">
         </div>
         <span class="browse-label">Fixed price</span>
       </a>
-      <a href="#" class="browse-card">
+      <a href="" class="browse-card">
         <div class="browse-icon">
           <img src="https://ext.same-assets.com/1288399759/2362828911.svg" alt="Reserve price">
         </div>
         <span class="browse-label">Reserve price</span>
       </a>
-      <a href="#" class="browse-card">
+      <a href="" class="browse-card">
         <div class="browse-icon">
           <img src="https://ext.same-assets.com/1288399759/2129115242.svg" alt="Editions">
         </div>
         <span class="browse-label">Editions</span>
       </a>
-      <a href="#" class="browse-card">
+      <a href="" class="browse-card">
         <div class="browse-icon">
           <img src="https://ext.same-assets.com/1288399759/513297910.svg" alt="Under $100">
         </div>
         <span class="browse-label">Under $100</span>
       </a>
-      <a href="#" class="browse-card">
+      <a href="" class="browse-card">
         <div class="browse-icon">
           <img src="https://ext.same-assets.com/1288399759/620544987.svg" alt="Curated series">
         </div>
@@ -4043,7 +4043,7 @@ function goToCollection(collectionId) { window.location.href = `collection.html?
 const popupModal = document.getElementById('popupModal');
 const modalContent = document.getElementById('modalContent');
 const modalClose = document.getElementById('modalClose');
-let countdownInterval = null;
+
 
 // modalClose.addEventListener('click', closeModal);
 // popupModal.addEventListener('click', e => { if (e.target === popupModal) closeModal(); });
@@ -4066,7 +4066,93 @@ let countdownInterval = null;
 function placeBid(auctionId) {
     alert('Bid button clicked for auction: ' + auctionId);
 }
+let countdownInterval = null;
 
+function showPopup(content) {
+    // Remove any existing popup first (prevents duplicates)
+    const existing = document.getElementById("globalPopup");
+    if (existing) {
+        existing.remove();
+        if (countdownInterval) clearInterval(countdownInterval);
+    }
+
+    // Create overlay
+    const overlay = document.createElement("div");
+    overlay.id = "globalPopup";
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.background = "rgba(0,0,0,0.7)";
+    overlay.style.display = "flex";
+    overlay.style.alignItems = "center";
+    overlay.style.justifyContent = "center";
+    overlay.style.zIndex = "9999";
+    overlay.style.backdropFilter = "blur(6px)";
+
+    // Modal container
+    const modal = document.createElement("div");
+    modal.style.background = "#0f0f0f";
+    modal.style.color = "#fff";
+    modal.style.padding = "25px";
+    modal.style.borderRadius = "16px";
+    modal.style.width = "90%";
+    modal.style.maxWidth = "500px";
+    modal.style.boxShadow = "0 10px 40px rgba(0,0,0,0.5)";
+    modal.style.position = "relative";
+    modal.style.animation = "popupFade 0.25s ease";
+
+    // Close button
+    const closeBtn = document.createElement("button");
+    closeBtn.innerHTML = "&times;";
+    closeBtn.style.position = "absolute";
+    closeBtn.style.top = "10px";
+    closeBtn.style.right = "15px";
+    closeBtn.style.background = "transparent";
+    closeBtn.style.border = "none";
+    closeBtn.style.color = "#fff";
+    closeBtn.style.fontSize = "24px";
+    closeBtn.style.cursor = "pointer";
+
+    closeBtn.onclick = () => {
+        overlay.remove();
+        if (countdownInterval) clearInterval(countdownInterval);
+    };
+
+    // Inject content
+    const modalContent = document.createElement("div");
+    modalContent.innerHTML = content;
+
+    modal.appendChild(closeBtn);
+    modal.appendChild(modalContent);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    // Close when clicking outside modal
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            overlay.remove();
+            if (countdownInterval) clearInterval(countdownInterval);
+        }
+    });
+
+    // Add small animation (only once)
+    if (!document.getElementById("popupAnimationStyle")) {
+        const style = document.createElement("style");
+        style.id = "popupAnimationStyle";
+        style.innerHTML = `
+            @keyframes popupFade {
+                from { opacity: 0; transform: scale(0.9); }
+                to { opacity: 1; transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // Make modalContent accessible to your countdown function
+    window.modalContent = modalContent;
+}
 function openAuctionModal(id) {
     const auction = allAuctions.find(a => a._id === id);
     if (!auction) return;

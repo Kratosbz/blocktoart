@@ -744,6 +744,70 @@ body {
 
 <!-- IMPORTANT: Script renders inside here -->
 <div id="pageContent"></div>
+  <!-- Footer -->
+  <footer>
+    <div class="container" style="max-width: 100%; padding: 0;">
+      <div class="footer-header">
+        <div class="footer-logo">
+          <img src="https://ext.same-assets.com/1288399759/1188727251.svg" alt="Exchange.Art">
+          <span class="footer-logo-text">Blockto<span>art</span></span>
+        </div>
+        <!-- <div class="theme-toggle">
+          <div class="toggle-switch"></div>
+          Dark
+        </div> -->
+      </div>
+      <p class="footer-tagline">Collect & sell digital fine art</p>
+
+      <div class="footer-links">
+        <div class="footer-column">
+          <h4>Marketplace</h4>
+          <ul>
+            <li><a href="./marketplace.html">Artworks</a></li>
+            <li><a href="./allcollections.html">Collections</a></li>
+            <!-- <li><a href="#">Series</a></li>
+            <li><a href="#">Profiles</a></li>
+            <li><a href="#">Leaderboards</a></li> -->
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Resources</h4>
+          <ul>
+            <!-- <li><a href="#">ArtDrop</a></li> -->
+            <li><a href="#">Blog</a></li>
+            <li><a href="./support.html">Helpdesk</a></li>
+            <!-- <li><a href="#">Suggest a feature</a></li>
+            <li><a href="#">Branding</a></li> -->
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Account</h4>
+          <ul>
+            <li><a href="./signup.html">Sign up</a></li>
+            <li><a href="./login.html">Sign in</a></li>
+            <!-- <li><a href="#">Legacy Sign In</a></li> -->
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Community</h4>
+          <div class="social-links">
+            <a href="#"><img src="https://ext.same-assets.com/1288399759/2388733996.svg" alt="X"></a>
+            <a href="#"><img src="https://ext.same-assets.com/1288399759/1750959219.svg" alt="YouTube"></a>
+            <a href="#"><img src="https://ext.same-assets.com/1288399759/2443148422.svg" alt="Instagram"></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>Copyright 2026 EXCHANGE.ART, All rights reserved</span>
+        <div class="footer-legal">
+          <a href="#">Terms of service</a>
+          <a href="#">Privacy policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
 <script>
 /* ================= GLOBAL ================= */
 let artistName = '';
@@ -771,6 +835,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         await loadCollections();
         await loadAuctions();
         setupTabs(); // activate tab switching
+          renderCollections();
     } catch (err) {
         console.error(err);
         showError("Error loading page");
@@ -787,28 +852,7 @@ function showError(message) {
     `;
 }
 
-const followBtn = document.getElementById("followBtn");
 
-followBtn.addEventListener("click", async () => {
-  const userId = localStorage.getItem("userId"); // logged in user
-  const targetUserId = "PROFILE_USER_ID_HERE";   // profile owner id
-
-  const res = await fetch("https://changes-sample.onrender.com/api/users/follow", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ userId, targetUserId })
-  });
-
-  const data = await res.json();
-
-  if (data.following) {
-    followBtn.innerText = "♥ Following";
-  } else {
-    followBtn.innerText = "♡ Follow";
-  }
-});
 
 async function loadArtistProfileAvatar() {
   try {
@@ -835,7 +879,7 @@ async function loadArtistProfileAvatar() {
 
     const data = await res.json();
     const coverageEl = document.getElementById("coverage");
-
+localStorage.setItem("artistId",data._id)
     if (!coverageEl) return;
 
     coverageEl.innerHTML = `
@@ -865,12 +909,12 @@ async function loadArtistProfile() {
 
 /* ================= RENDER PROFILE ================= */
 function renderProfile() {
-   
+   var artistId=localStorage.getItem("artistId")
     document.getElementById("pageContent").innerHTML = `
 <section class="profileDesktop">
     <div class="profileTopRow">
         <div class="profileLeftActions">
-            <button class="actionBtn" id='followBtn'>♡ Follow</button>
+            <button class="actionBtn" id="followBtn">♡ Follow</button>
             <button class="actionBtn" id="exhibitionBtn">Exhibition</button>
             <button class="iconBtn">↗</button>
         </div>
@@ -905,13 +949,68 @@ function renderProfile() {
 </section>
 `;
 
+    // EXHIBITION BUTTON
     document.getElementById("exhibitionBtn").addEventListener("click", () => {
          showExhibitions();
     });
 
+    // FOLLOW BUTTON (NOW SAFE)
+   const followBtn = document.getElementById("followBtn");
+
+followBtn.addEventListener("click", async () => {
+    const userId = localStorage.getItem("userId");
+    const targetUserId = localStorage.getItem("artistId");
+
+    const res = await fetch("https://changes-sample.onrender.com/api/follow", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, targetUserId })
+    });
+
+    const data = await res.json();
+
+    updateFollowButton(followBtn, data.following);
+});
+
+// ✅ CHECK FOLLOW STATUS ON LOAD
+const userId = localStorage.getItem("userId");
+// const artistId = localStorage.getItem("artistId");
+
+if (userId && artistId) {
+    checkFollowStatus(userId, artistId, followBtn);
+}
     renderNFTs();
 }
 
+
+async function checkFollowStatus(userId, artistId, followBtn) {
+    try {
+        const res = await fetch(
+            `https://changes-sample.onrender.com/api/follow-status?userId=${userId}&targetUserId=${artistId}`
+        );
+
+        if (!res.ok) return;
+
+        const data = await res.json();
+
+        updateFollowButton(followBtn, data.following);
+
+    } catch (err) {
+        console.error("Follow status check failed:", err);
+    }
+}
+
+function updateFollowButton(button, isFollowing) {
+    if (!button) return;
+
+    if (isFollowing) {
+        button.innerHTML = "♥ Following";
+        button.classList.add("following");
+    } else {
+        button.innerHTML = "♡ Follow";
+        button.classList.remove("following");
+    }
+}
 let allExhibitions = []; // global
 
 // 1️⃣ Fetch exhibitions when the page loads
