@@ -1255,14 +1255,81 @@
                 </svg>
             </button>
         </nav>
-
-        <div class="searchContainer">
+<style>
+  .vx-search-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            margin-top: 0.5rem;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1001;
+        }
+        
+        .vx-search-dropdown.show { display: block; }
+        
+        .vx-search-result {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .vx-search-result:hover { background: var(--vx-light); }
+        
+        .vx-search-result img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        
+        .vx-search-result-info h6 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .vx-search-result-info small {
+            color: var(--vx-text-muted);
+        }
+        
+        .vx-search-section-label {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--vx-text-muted);
+            text-transform: uppercase;
+            background: var(--vx-light);
+            border-bottom: 1px solid var(--vx-border);
+        }
+        
+        .vx-search-result.artist-result {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), transparent);
+        }
+        
+        .vx-search-result.artist-result:hover {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), var(--vx-light));
+        }
+        
+</style>
+        <div class="searchContainer vx-search-container">
             <svg class="searchIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.35-4.35"></path>
             </svg>
-            <input type="text" class="searchInput" placeholder="Search Exchange">
+            <input type="text" id="searchInput"  class="searchInput vx-search-input" placeholder="Search Exchange">
             <span class="searchShortcut">Ctrl K</span>
+            <div class="vx-search-dropdown" id="searchDropdown"></div>
         </div>
 
         <div class="headerActions">
@@ -1272,7 +1339,7 @@
                     <path d="m21 21-4.35-4.35"></path>
                 </svg>
             </button>
-            <button class="signInButton">Sign in</button>
+            <button class="signInButton" onclick="window.location.href='login.html'" >Sign in</button>
             <button class="menuButton" onclick="toggleSearch()">
                 <svg class="menuIcon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                     <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -1282,6 +1349,112 @@
             </button>
         </div>
     </header>
+    <script>
+       let searchTimeout = null;
+       
+      const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => performSearch(e.target.value), 300);
+            });
+            
+            searchInput.addEventListener('focus', () => {
+                if (searchInput.value.length >= 2) {
+                    document.getElementById('searchDropdown').classList.add('show');
+                }
+            });
+
+document.addEventListener('click', (e) => {
+                if (!e.target.closest('.vx-search-container')) {
+                    document.getElementById('searchDropdown').classList.remove('show');
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+            });
+
+
+            async function performSearch(query) {
+            const dropdown = document.getElementById('searchDropdown');
+            
+            if (query.length < 2) {
+                dropdown.classList.remove('show');
+                return;
+            }
+            
+            try {
+// const token = localStorage.getItem('token'); 
+//     if (!token) throw new Error('No token found');
+
+                const res = await fetch(`https://changes-sample.onrender.com/api/marketplace/search?q=${encodeURIComponent(query)}`);
+                if (!res.ok) throw new Error('Search failed');
+                
+                const results = await res.json();
+                
+                if (results.length === 0) {
+                    dropdown.innerHTML = '<div class="p-3 text-muted text-center">No results found</div>';
+                } else {
+                    // Extract unique artists from results
+                    const uniqueArtists = [...new Set(results.map(nft => nft.creator).filter(Boolean))];
+                    const queryLower = query.toLowerCase();
+                    const matchingArtists = uniqueArtists.filter(artist => 
+                        artist.toLowerCase().includes(queryLower)
+                    ).slice(0, 3);
+                   // Extract unique creators + owners
+// const uniqueArtists = [
+//   ...new Set(
+//     results
+//       .flatMap(nft => [nft.creator, nft.owner])
+//       .filter(Boolean)
+//   )
+// ];
+
+// const queryLower = query.toLowerCase();
+
+// const matchingArtists = uniqueArtists
+//   .filter(name => name.toLowerCase().includes(queryLower))
+//   .slice(0, 3); 
+                    let html = '';
+                    
+                    // Show matching artists first
+                    if (matchingArtists.length > 0) {
+                        html += '<div class="vx-search-section-label">Artists</div>';
+                        html += matchingArtists.map(artist => `
+                            <a href="artist.html?name=${encodeURIComponent(artist)}" class="vx-search-result artist-result" data-testid="search-artist-${artist}">
+                                <div class="vx-artist-avatar">${artist.charAt(0).toUpperCase()}</div>
+                                <div class="vx-search-result-info">
+                                    <h6>${artist}</h6>
+                                    <small>View Profile</small>
+                                </div>
+                            </a>
+                        `).join('');
+                    }
+                    
+                    // Show NFTs
+                    html += '<div class="vx-search-section-label">Artworks</div>';
+                    html += results.slice(0, 6).map(nft => `
+                        <a href="artwork.html?id=${nft._id}" class="vx-search-result" data-testid="search-result-${nft._id}">
+                            <img src="${nft.imageUrl}" alt="${nft.name}">
+                            <div class="vx-search-result-info">
+                                <h6>${nft.name}</h6>
+                                <small>by ${nft.creator || 'Unknown'} - ${nft.category}</small>
+                            </div>
+                        </a>
+                    `).join('');
+                    
+                    dropdown.innerHTML = html;
+                }
+                
+                dropdown.classList.add('show');
+            } catch (err) {
+                console.error('Search error:', err);
+            }
+        }
+    </script>
 
     <!-- Mobile Search Modal -->
     <div class="mobileSearchModal" id="searchModal" onclick="closeSearchIfOutside(event)">
@@ -1291,10 +1464,10 @@
                     <circle cx="11" cy="11" r="8"></circle>
                     <path d="m21 21-4.35-4.35"></path>
                 </svg>
-                <input type="text" class="searchModalInput" placeholder="Search Exchange" id="searchInput" autofocus>
+                <!-- <input type="text" class="searchModalInput" placeholder="Search Exchange" id="searchInput" autofocus>
                 <button class="cancelButton" onclick="toggleSearch()">Cancel</button>
 
- <input type="text" class="searchModalInput" placeholder="Search Exchange" id="searchInput" autofocus>
+ <input type="text" class="searchModalInput" placeholder="Search Exchange" id="searchInput" autofocus> -->
                
             </div>
             <div class="categoryList">
